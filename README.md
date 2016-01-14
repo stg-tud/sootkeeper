@@ -9,10 +9,10 @@ The use of static analysis allows developers to analyze the source code of a pro
 
 Team
 -----------
-Ben Hermann
-Florian Kübler
-Johannes Lerch
-Patrick Müller
-Ben Setzer
+* Ben Hermann
+* Florian Kübler
+* Johannes Lerch
+* Patrick Müller
+* Ben Setzer
 
 
