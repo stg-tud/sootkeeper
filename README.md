@@ -1,4 +1,4 @@
-sootkeeper
+SootKeeper
 ==========
 
 Do you have a large evaluation base to run your analysis on? Tired of rerunning the basic analyses when only your specific analysis changes? We developed OSGi modularity for static analysis to counter this.
