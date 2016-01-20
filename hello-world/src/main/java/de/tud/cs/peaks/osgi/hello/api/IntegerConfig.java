@@ -1,4 +1,4 @@
-package de.tud.cs.peaks.osgi.hello.impl;
+package de.tud.cs.peaks.osgi.hello.api;
 
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 

@@ -3,7 +3,6 @@ package container;
 import de.tud.cs.peaks.osgi.framework.api.IAnalysisService;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
-import org.apache.felix.service.command.Descriptor;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -25,7 +24,6 @@ public class HostService {
         findAnalyses();
     }
 
-    @Descriptor("Lists all available analyses")
     public void listAnalyses() {
         findAnalyses();
         System.out.println("Available analyses:");
@@ -34,9 +32,8 @@ public class HostService {
         }
     }
 
-    @Descriptor("Run analysis")
-    public void runAnalysis(@Descriptor("The analysis to run") String analysis,
-                            @Descriptor("Parameters for the analysis") String param) {
+    public void runAnalysis(String analysis,
+                            String param) {
         findAnalyses();
         String classNameOfService = analyses.get(analysis);
         if (classNameOfService == null) {
@@ -46,7 +43,8 @@ public class HostService {
         ServiceReference serviceReference = context.getServiceReference(classNameOfService);
         IAnalysisService<IAnalysisResult, IAnalysisConfig> service =
                 (IAnalysisService<IAnalysisResult, IAnalysisConfig>) context.getService(serviceReference);
-        Future<IAnalysisResult> r = service.performAnalysis(service.parseConfig(param));
+        IAnalysisConfig iAnalysisConfig = service.parseConfig(param);
+        Future<IAnalysisResult> r = service.performAnalysis(iAnalysisConfig);
         context.ungetService(serviceReference);
     }
 
@@ -70,13 +68,12 @@ public class HostService {
         }
     }
 
-    @Descriptor("Lists all available analyses")
     public void la() {
         listAnalyses();
     }
 
-    @Descriptor("Run analysis")
-    public void ra(@Descriptor("The analysis to run") String analysis, @Descriptor("Parameters for the analysis") String param) {
+
+    public void ra(String analysis, String param) {
         runAnalysis(analysis, param);
     }
 }

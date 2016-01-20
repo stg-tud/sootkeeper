@@ -10,8 +10,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.1</version>
         <configuration>
-          <source>1.7</source>
-          <target>1.7</target>
+          <source>1.8</source>
+          <target>1.8</target>
         </configuration>
       </plugin>
       <plugin>
@@ -23,7 +23,7 @@
           <instructions>
             <Bundle-SymbolicName>Container</Bundle-SymbolicName>
             <Bundle-Version>1.0</Bundle-Version>
-            <Import-Package>de.tud.cs.peaks.osgi.framework.api.*,org.osgi.framework,org.apache.felix.framework.*</Import-Package>
+            <Import-Package>de.tud.cs.peaks.osgi.framework.api.*,org.osgi.framework</Import-Package>
             <Bundle-Activator>container.HostActivator</Bundle-Activator>
             </instructions>
         </configuration>
@@ -36,11 +36,6 @@
   		<artifactId>org.osgi.core</artifactId>
   		<version>1.4.0</version>
   	</dependency>
-    <dependency>
-      <groupId>org.apache.felix</groupId>
-      <artifactId>org.apache.felix.gogo.runtime</artifactId>
-      <version>0.16.2</version>
-    </dependency>
     <dependency>
       <groupId>de.tud.cs.peaks.osgi</groupId>
       <artifactId>framework</artifactId>
