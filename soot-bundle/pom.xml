@@ -47,9 +47,7 @@
 						<Export-Package>de.tud.cs.peaks.osgi.soot.api</Export-Package>
 						<Private-Package>de.tud.cs.peaks.osgi.soot.*</Private-Package>
 						<Bundle-Activator>de.tud.cs.peaks.osgi.soot.Activator</Bundle-Activator>
-						<Import-Package>de.tud.cs.peaks.osgi.framework.api,de.tud.cs.peaks.osgi.
-                            framework.api.annotations,de.tud.cs.peaks.osgi.framework.api.data,de.tu
-                            d.cs.peaks.osgi.soot.api</Import-Package>
+						<Import-Package>de.tud.cs.peaks.osgi.framework.api.*</Import-Package>
 						<Embed-Dependency>artifactId=soot</Embed-Dependency>
 						<Embed-Transitive>true</Embed-Transitive>
 					</instructions>

@@ -6,7 +6,7 @@
         <additionalProperties>
           <property key="Export-Package" value="de.tud.cs.peaks.osgi.soot.api" />
           <property key="Private-Package" value="de.tud.cs.peaks.osgi.soot.*" />
-          <property key="Import-Package" value="de.tud.cs.peaks.osgi.framework.api,de.tud.cs.peaks.osgi.framework.api.annotations,de.tud.cs.peaks.osgi.framework.api.data,de.tud.cs.peaks.osgi.soot.api" />
+          <property key="Import-Package" value="de.tud.cs.peaks.osgi.framework.api.*" />
           <property key="Embed-Dependency" value="artifactId=soot" />
           <property key="Embed-Transitive" value="true" />
           <property key="Bundle-Name" value="soot-bundle" />
