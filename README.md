@@ -16,3 +16,15 @@ Team
 * Ben Setzer
 
 
+Usage
+-----------
+
+You need Soot in your local maven repository. 
+If you made Modifications of your own to Soot you need to build it yourself. 
+This requires you to build [Jasmin](https://github.com/Sable/jasmin),[Heros](https://github.com/Sable/heros)  and [Soot](https://github.com/Sable/soot) with `ant publish-local-maven`
+If you just want to use Soot it is enough to add the current nightly with:
+```
+mvn org.apache.maven.plugins:maven-install-plugin:2.5.2:install-file -Dfile=soot-trunk.jar -DgroupId=ca.mcgill.sable -DartifactId=soot -Dversion=trunk -Dpackaging=jar
+```
+
+TODO
