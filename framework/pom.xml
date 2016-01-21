@@ -25,7 +25,7 @@
                         <Bundle-SymbolicName>Framework</Bundle-SymbolicName>
                         <Bundle-Version>1.0</Bundle-Version>
                         <Export-Package>
-                            de.tud.cs.peaks.osgi.framework.api,de.tud.cs.peaks.osgi.framework.api.annotations,de.tud.cs.peaks.osgi.framework.api.data
+                            de.tud.cs.peaks.osgi.framework.api.*
                         </Export-Package>
                         <Import-Package>org.osgi.framework</Import-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.framework.Activator</Bundle-Activator>

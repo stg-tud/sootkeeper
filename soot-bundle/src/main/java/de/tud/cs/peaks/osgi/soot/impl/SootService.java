@@ -7,9 +7,6 @@ import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import de.tud.cs.peaks.osgi.soot.api.AbstractSootService;
 import de.tud.cs.peaks.osgi.soot.api.SootConfig;
 import de.tud.cs.peaks.osgi.soot.api.SootResult;
-import de.tud.cs.peaks.sootconfig.AnalysisTarget;
-import de.tud.cs.peaks.sootconfig.FluentOptions;
-import de.tud.cs.peaks.sootconfig.SootRun;
 import org.osgi.framework.BundleContext;
 
 import java.lang.instrument.IllegalClassFormatException;
@@ -45,13 +42,13 @@ public class SootService extends AbstractSootService {
         System.out.println("Prep. Soot!");
         try {
             soot.Main.main(new String[]{"-w", "-v", "-process-path", "/Users/floriankuebler/Desktop/securibench-91a/"});
-            FluentOptions options = new FluentOptions().wholeProgramAnalysis().keepLineNumbers().allowPhantomReferences();
-            AnalysisTarget target = new AnalysisTarget().processPath("/Users/floriankuebler/Desktop/securibench-91a/");
-            SootRun sootRun = new SootRun(options, target);
-            System.out.println("Start Soot");
-            de.tud.cs.peaks.sootconfig.SootResult res = sootRun.perform();
-            System.out.println("Soot has run:");
-            System.out.println(res);
+//            FluentOptions options = new FluentOptions().wholeProgramAnalysis().keepLineNumbers().allowPhantomReferences();
+//            AnalysisTarget target = new AnalysisTarget().processPath("/Users/floriankuebler/Desktop/securibench-91a/");
+//            SootRun sootRun = new SootRun(options, target);
+//            System.out.println("Start Soot");
+//            de.tud.cs.peaks.sootconfig.SootResult res = sootRun.perform();
+//            System.out.println("Soot has run:");
+//            System.out.println(res);
 
         } catch (Exception e) {
             e.printStackTrace();
