@@ -22,11 +22,5 @@ public class Activator extends AbstractAnalysisActivator<IntegerResult, IntegerC
 		return new IntegerService(getBundleContext());
 	}
 
-	@Override
-	public Class<? extends IAnalysisService<IntegerResult, IntegerConfig>> getAnalysisServiceAPIClass() {
-		return AbstractIntegerService.class;
-	}
-
-
 
 }

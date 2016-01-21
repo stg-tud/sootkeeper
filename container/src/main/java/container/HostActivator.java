@@ -17,10 +17,10 @@ public class HostActivator implements BundleActivator {
         registration = context.registerService("container.HostService", s, properties);
     }
 
-    private static Hashtable<String, Object> generateProperties() {
+    private static Dictionary<String, Object> generateProperties() {
         Hashtable<String,Object > properties = new Hashtable<>();
         properties.put("osgi.command.scope", "sootkeeper");
-        properties.put("osgi.command.function", new String[]{"listAnalyses","la","ra","runAnalyses"});
+        properties.put("osgi.command.function", new String[]{"listAnalyses","la","ra","runAnalysis"});
         return properties;
     }
 

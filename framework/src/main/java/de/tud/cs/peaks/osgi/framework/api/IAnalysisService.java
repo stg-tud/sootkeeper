@@ -51,4 +51,5 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 */
 	Config parseConfig(Object config);
 
+	String getApiName();
 }

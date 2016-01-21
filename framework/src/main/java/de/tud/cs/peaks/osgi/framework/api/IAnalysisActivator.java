@@ -24,12 +24,7 @@ public interface IAnalysisActivator<Result extends IAnalysisResult, Config exten
 	 * @throws IllegalStateException 
 	 */
 	AbstractAnalysisService<Result, Config> getAnalysisService() throws IllegalStateException, IllegalClassFormatException;
-	
-	/**
-	 * 
-	 * @return
-	 */
-	Class<? extends IAnalysisService<Result, Config>> getAnalysisServiceAPIClass();
+
 	
 	/**
 	 * 

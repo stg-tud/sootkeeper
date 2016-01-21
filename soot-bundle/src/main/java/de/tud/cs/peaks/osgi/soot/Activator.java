@@ -22,11 +22,5 @@ public class Activator extends AbstractAnalysisActivator<SootResult, SootConfig>
 		return new SootService(getBundleContext());
 	}
 
-	@Override
-	public Class<? extends IAnalysisService<SootResult, SootConfig>> getAnalysisServiceAPIClass() {
-		return AbstractSootService.class;
-	}
-
-
 
 }

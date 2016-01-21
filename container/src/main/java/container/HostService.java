@@ -21,7 +21,6 @@ public class HostService {
     public HostService(BundleContext context) {
         this.context = context;
         this.analyses = new Hashtable<>();
-        findAnalyses();
     }
 
     public void listAnalyses() {
@@ -57,8 +56,7 @@ public class HostService {
                 Object service = context.getService(serviceReference);
                 if (service instanceof IAnalysisService) {
                     String shortName = ((IAnalysisService<?, ?>) service).getName();
-                    String className = serviceReference.toString();
-                    className = className.substring(1, className.length() - 1);
+                    String className = ((IAnalysisService<?, ?>) service).getApiName();
                     analyses.put(shortName, className);
                 }
                 context.ungetService(serviceReference);
