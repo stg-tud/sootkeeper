@@ -5,6 +5,9 @@
 	<artifactId>hello-world</artifactId>
 	<version>nightly</version>
 	<packaging>bundle</packaging>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.felix</groupId>
@@ -36,7 +39,7 @@
 					<instructions>
 						<Export-Package>de.tud.cs.peaks.osgi.hello.api</Export-Package>
 						<Private-Package>de.tud.cs.peaks.osgi.hello.*</Private-Package>
-						<Import-Package>de.tud.cs.peaks.osgi.framework.api,org.osgi.framework</Import-Package>
+						<Import-Package>de.tud.cs.peaks.osgi.framework.api.*,org.osgi.framework</Import-Package>
 						<Bundle-Activator>de.tud.cs.peaks.osgi.hello.Activator</Bundle-Activator>
 					</instructions>
 				</configuration>

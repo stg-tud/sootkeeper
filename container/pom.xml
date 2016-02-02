@@ -3,7 +3,10 @@
   <groupId>de.tud.cs.peaks.osgi</groupId>
   <artifactId>container</artifactId>
   <version>nightly</version>
-  	<packaging>bundle</packaging>
+  <packaging>bundle</packaging>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <build>
     <plugins>
       <plugin>
