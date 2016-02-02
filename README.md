@@ -42,6 +42,13 @@ in the framework, container and soot-bundle folders.
 
 ## Running 
 ### In IntelliJ IDEA
+In IntelliJ IDEA go to `Run > Edit Configurations...`, click on `+` and select `OSGi Bundles`.
+
+Give the configuration a name of your choice and select either Felix or Equinox as OSGi Framework. (Make sure you added a OSGi Framework to IntelliJ IDEA as shown [here](https://www.jetbrains.com/idea/help/osgi-framework-instances.html))
+
+Now add the sootkeeper bundles by clicking `+` and select framework, container and the analysis bundles (e.g. soot-bundle).
+
+Furthermore we recommend to clean the OSGi cache on each run (in the Parameters tap, select `Runtime directory: Recreate each time`
 
 ### In eclipse
 TODO
