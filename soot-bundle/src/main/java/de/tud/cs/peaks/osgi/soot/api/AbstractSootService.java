@@ -8,10 +8,11 @@ import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
 
 public abstract class AbstractSootService extends AbstractAnalysisService<SootResult, SootConfig>{
 
-	public AbstractSootService(BundleContext context) throws IllegalStateException, IllegalClassFormatException {
+	protected AbstractSootService(BundleContext context) throws IllegalClassFormatException {
 		super(context);
 	}
 
+	@Override
 	public String getApiName(){
 		return AbstractSootService.class.getCanonicalName();
 	}

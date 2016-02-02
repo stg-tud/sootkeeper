@@ -8,15 +8,18 @@ import de.tud.cs.peaks.osgi.soot.api.AbstractSootService;
 import de.tud.cs.peaks.osgi.soot.api.SootConfig;
 import de.tud.cs.peaks.osgi.soot.api.SootResult;
 import org.osgi.framework.BundleContext;
+import soot.G;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.Map;
 
 @DependsOn({})
 public class SootService extends AbstractSootService {
-    private static final String NAME = "SootAnalysis";
+    private static final String NAME = "soot";
 
-    public SootService(BundleContext context) throws IllegalStateException, IllegalClassFormatException {
+    public SootService(BundleContext context) throws IllegalClassFormatException {
         super(context);
     }
 
@@ -25,6 +28,9 @@ public class SootService extends AbstractSootService {
         if (conf instanceof Integer) {
             return new SootConfig((Integer) conf);
         } else if (conf instanceof String) {
+            if (((String) conf).isEmpty()){
+                return new SootConfig(5);
+            }
             return new SootConfig(Integer.valueOf((String) conf));
         }
         throw new IllegalArgumentException("Could not create Config from " + conf);
@@ -41,7 +47,7 @@ public class SootService extends AbstractSootService {
                                           IAnalysisResult> previousResults) {
         System.out.println("Prep. Soot!");
         try {
-            soot.Main.main(new String[]{"-w", "-v", "-process-path", "/Users/floriankuebler/Desktop/securibench-91a/"});
+            soot.Main.main(new String[]{"-w", "-allow-phantom-refs", "-process-path", "/home/torun/Dropbox/intelli/peaks/input/log4j-1.2.17.jar"});
 //            FluentOptions options = new FluentOptions().wholeProgramAnalysis().keepLineNumbers().allowPhantomReferences();
 //            AnalysisTarget target = new AnalysisTarget().processPath("/Users/floriankuebler/Desktop/securibench-91a/");
 //            SootRun sootRun = new SootRun(options, target);
@@ -49,7 +55,6 @@ public class SootService extends AbstractSootService {
 //            de.tud.cs.peaks.sootconfig.SootResult res = sootRun.perform();
 //            System.out.println("Soot has run:");
 //            System.out.println(res);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
