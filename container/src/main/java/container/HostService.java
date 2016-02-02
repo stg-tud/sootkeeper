@@ -7,8 +7,10 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Future;
+
 
 public class HostService {
 
@@ -16,18 +18,19 @@ public class HostService {
     /**
      * This table maps the different Analysis names to their service representation
      */
-    private final Hashtable<String, String> analyses;
+    private final Map<String, String> analyses;
 
     public HostService(BundleContext context) {
         this.context = context;
-        this.analyses = new Hashtable<>();
+        analyses = new HashMap<>();
     }
 
     public void listAnalyses() {
         findAnalyses();
         System.out.println("Available analyses:");
         for (String analysis : analyses.keySet()) {
-            System.out.println("\t" + analysis);
+            System.out.print('\t');
+            System.out.println(analysis);
         }
     }
 
@@ -39,9 +42,13 @@ public class HostService {
             System.out.println("Could not run: " + analysis);
             return;
         }
-        ServiceReference serviceReference = context.getServiceReference(classNameOfService);
-        IAnalysisService<IAnalysisResult, IAnalysisConfig> service =
-                (IAnalysisService<IAnalysisResult, IAnalysisConfig>) context.getService(serviceReference);
+        ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceReference =
+                (ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>>)
+                        context.getServiceReference(classNameOfService);
+
+
+        IAnalysisService<IAnalysisResult, IAnalysisConfig> service = context.getService(serviceReference);
+
         IAnalysisConfig iAnalysisConfig = service.parseConfig(param);
         Future<IAnalysisResult> r = service.performAnalysis(iAnalysisConfig);
         context.ungetService(serviceReference);
@@ -51,8 +58,8 @@ public class HostService {
     private void findAnalyses() {
         analyses.clear();
         try {
-            ServiceReference[] serviceReferences = context.getAllServiceReferences(null, null);
-            for (ServiceReference serviceReference : serviceReferences) {
+            ServiceReference<?>[] serviceReferences = context.getAllServiceReferences(null, null);
+            for (ServiceReference<?> serviceReference : serviceReferences) {
                 Object service = context.getService(serviceReference);
                 if (service instanceof IAnalysisService) {
                     String shortName = ((IAnalysisService<?, ?>) service).getName();
@@ -61,7 +68,7 @@ public class HostService {
                 }
                 context.ungetService(serviceReference);
             }
-        } catch (InvalidSyntaxException e) {
+        } catch (InvalidSyntaxException ignored) {
             // should not happen since null is no invalid syntax
         }
     }
@@ -73,5 +80,13 @@ public class HostService {
 
     public void ra(String analysis, String param) {
         runAnalysis(analysis, param);
+    }
+
+    public void ra(String analysis) {
+        runAnalysis(analysis, "");
+    }
+
+    public void runAnalysis(String analysis) {
+        runAnalysis(analysis, "");
     }
 }

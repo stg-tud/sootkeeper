@@ -54,4 +54,15 @@ Furthermore we recommend to clean the OSGi cache on each run (in the Parameters 
 TODO
 
 ### Manually
+For this example we are going to use the felix framework.
+ 
+Copy the built jars from the different target folders to the bundle folder of the felix framework.
+Run felix using in the top level folder of the felix distribution.
+   
+    java -jar bin/felix.jar
+    
+### Using the OSGi shell
 
+Sootkeeper provides two commands in the OSGi shell, `listAnalyses` and `runAnalysis` and their respective shorthands `la` and `ra`.
+
+Any listed Analysis can then be run with `runAnalysis <analysisName> <Optional Parameter>`.
