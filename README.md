@@ -61,6 +61,8 @@ Run felix using in the top level folder of the felix distribution.
    
     java -jar bin/felix.jar
     
+**Note:** If you changed a bundle (e.g. your analysis) it is not sufficient enough to just replace the jar within the bundle directory. Furthermore you have to delete the felix-cache directory.
+
 ### Using the OSGi shell
 
 Sootkeeper provides two commands in the OSGi shell, `listAnalyses` and `runAnalysis` and their respective shorthands `la` and `ra`.
