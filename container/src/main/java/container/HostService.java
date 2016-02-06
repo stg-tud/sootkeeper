@@ -82,6 +82,17 @@ public class HostService {
         runAnalysis(analysis, param);
     }
 
+    public void ra(String... params) {
+        runAnalysis(params);
+    }
+
+    private void runAnalysis(String... params) {
+        for (String s: params
+             ) {
+            System.out.printf("s\n");
+        }
+    }
+
     public void ra(String analysis) {
         runAnalysis(analysis, "");
     }

@@ -24,6 +24,11 @@
             <artifactId>soot</artifactId>
             <version>trunk</version>
         </dependency>
+        <dependency>
+            <groupId>sootconfig</groupId>
+            <artifactId>sootconfig</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -46,7 +51,7 @@
                         <Private-Package>de.tud.cs.peaks.osgi.soot.*</Private-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.soot.Activator</Bundle-Activator>
                         <Import-Package>de.tud.cs.peaks.osgi.framework.api.*</Import-Package>
-                        <Embed-Dependency>artifactId=soot</Embed-Dependency>
+                        <Embed-Dependency>artifactId=soot|sootconfig</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                     </instructions>
                 </configuration>
