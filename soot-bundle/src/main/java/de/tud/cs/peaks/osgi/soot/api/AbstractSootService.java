@@ -12,9 +12,4 @@ public abstract class AbstractSootService extends AbstractAnalysisService<SootRe
 		super(context);
 	}
 
-	@Override
-	public String getApiName(){
-		return AbstractSootService.class.getCanonicalName();
-	}
-
 }

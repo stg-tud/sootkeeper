@@ -12,7 +12,4 @@ public abstract class AbstractIntegerService extends AbstractAnalysisService<Int
 		super(context);
 	}
 
-	public String getApiName(){
-		return AbstractIntegerService.class.getCanonicalName();
-	}
 }

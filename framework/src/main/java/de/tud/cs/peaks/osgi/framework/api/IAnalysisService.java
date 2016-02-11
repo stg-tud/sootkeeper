@@ -49,7 +49,7 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @param config
 	 * @return
 	 */
-	Config parseConfig(Object config);
+	Config parseConfig(String[] config);
 
 	String getApiName();
 }

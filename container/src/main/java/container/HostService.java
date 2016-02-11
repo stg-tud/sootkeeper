@@ -7,6 +7,7 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Future;
@@ -34,27 +35,6 @@ public class HostService {
         }
     }
 
-    public void runAnalysis(String analysis,
-                            String param) {
-        findAnalyses();
-        String classNameOfService = analyses.get(analysis);
-        if (classNameOfService == null) {
-            System.out.println("Could not run: " + analysis);
-            return;
-        }
-        ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceReference =
-                (ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>>)
-                        context.getServiceReference(classNameOfService);
-
-
-        IAnalysisService<IAnalysisResult, IAnalysisConfig> service = context.getService(serviceReference);
-
-        IAnalysisConfig iAnalysisConfig = service.parseConfig(param);
-        Future<IAnalysisResult> r = service.performAnalysis(iAnalysisConfig);
-        context.ungetService(serviceReference);
-    }
-
-
     private void findAnalyses() {
         analyses.clear();
         try {
@@ -77,27 +57,31 @@ public class HostService {
         listAnalyses();
     }
 
-
-    public void ra(String analysis, String param) {
-        runAnalysis(analysis, param);
-    }
-
     public void ra(String... params) {
         runAnalysis(params);
     }
 
     private void runAnalysis(String... params) {
-        for (String s: params
-             ) {
-            System.out.printf("s\n");
+        findAnalyses();
+        if (params.length < 1){
+            System.out.println("Please provide an analysis name.");
+            return;
         }
-    }
+        String analysis = params[0];
+        String classNameOfService = analyses.get(analysis);
+        if (classNameOfService == null) {
+            System.out.println("Could not run: " + analysis);
+            return;
+        }
+        ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceReference =
+                (ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>>)
+                        context.getServiceReference(classNameOfService);
 
-    public void ra(String analysis) {
-        runAnalysis(analysis, "");
-    }
 
-    public void runAnalysis(String analysis) {
-        runAnalysis(analysis, "");
+        IAnalysisService<IAnalysisResult, IAnalysisConfig> service = context.getService(serviceReference);
+
+        IAnalysisConfig iAnalysisConfig = service.parseConfig(Arrays.copyOfRange(params,1,params.length));
+        Future<IAnalysisResult> r = service.performAnalysis(iAnalysisConfig);
+        context.ungetService(serviceReference);
     }
 }

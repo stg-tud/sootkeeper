@@ -19,15 +19,7 @@ public class IntegerService extends AbstractIntegerService {
         super(context);
     }
 
-    @Override
-    public IntegerConfig parseConfig(Object conf) {
-        if (conf instanceof Integer) {
-            return new IntegerConfig((Integer) conf);
-        } else if (conf instanceof String) {
-            return new IntegerConfig(Integer.valueOf((String) conf));
-        }
-        throw new IllegalArgumentException("Could not create Config from " + conf);
-    }
+
 
     @Override
     public String getName() {
@@ -54,6 +46,14 @@ public class IntegerService extends AbstractIntegerService {
     public IAnalysisConfig convertConfig(IAnalysisConfig config,
                                          Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceClass) {
         return config;
+    }
+
+    @Override
+    public IntegerConfig parseConfig(String[] config) {
+        if (config.length == 1){
+            return new IntegerConfig(Integer.parseInt(config[0]));
+        }
+        throw new IllegalArgumentException("Please provide exactly 1 Integer");
     }
 
 }

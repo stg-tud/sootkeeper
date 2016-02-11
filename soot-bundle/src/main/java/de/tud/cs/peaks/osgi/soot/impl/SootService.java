@@ -27,16 +27,8 @@ public class SootService extends AbstractSootService {
     }
 
     @Override
-    public SootConfig parseConfig(Object conf) {
-        if (conf instanceof Integer) {
-            return new SootConfig((Integer) conf);
-        } else if (conf instanceof String) {
-            if (((String) conf).isEmpty()){
-                return new SootConfig(5);
-            }
-            return new SootConfig(Integer.valueOf((String) conf));
-        }
-        throw new IllegalArgumentException("Could not create Config from " + conf);
+    public SootConfig parseConfig(String[] conf) {
+        return new SootConfig(42);
     }
 
     @Override

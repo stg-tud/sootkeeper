@@ -144,4 +144,9 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
             }
         }
     }
+
+    @Override
+    public String getApiName() {
+        return getClass().getCanonicalName();
+    }
 }
