@@ -75,6 +75,7 @@ The easiest way to implement an modular analysis is creating a maven project and
 
 ### The pom.xml
 Within your pom file you need to care about three things:
+
 1. Say maven that your project is an OSGi bundle and should be exported as one (by `<packaging>bundle</packaging>`).
 2. Add the SootKeeper framework to your dependencies (GroupId: `de.tud.cs.peaks.osgi` ArtifactId `framework`).
 3. Configure the maven-bundle-plugin s.t. you list your packages to export (that should be used by other bundles), import (that you use from other bundles and must include the SootKeeper API `de.tud.cs.peaks.osgi.framework.api.*`) and the private packages (code that should be in your bundle jar but is not used outside you bundle). More over you need to set your Bundle Activator class.
