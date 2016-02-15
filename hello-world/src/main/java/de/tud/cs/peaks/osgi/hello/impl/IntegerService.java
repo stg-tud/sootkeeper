@@ -15,10 +15,10 @@ import java.util.Map;
 @DependsOn({})
 public class IntegerService extends AbstractIntegerService {
     private static final String NAME = "IntegerAnalysis";
+
     public IntegerService(BundleContext context) throws IllegalStateException, IllegalClassFormatException {
         super(context);
     }
-
 
 
     @Override
@@ -27,7 +27,7 @@ public class IntegerService extends AbstractIntegerService {
     }
 
     @Override
-    public IntegerResult runAnalysis(IAnalysisConfig config,
+    public IntegerResult runAnalysis(IntegerConfig config,
                                      Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>,
                                              IAnalysisResult> previousResults) {
         System.out.println("Start Computing");
@@ -37,7 +37,7 @@ public class IntegerService extends AbstractIntegerService {
             e.printStackTrace();
         }
         System.out.println("Computation done!");
-        IntegerResult r = new IntegerResult(((IntegerConfig) config).getValue());
+        IntegerResult r = new IntegerResult(config.getValue());
         System.out.println(r);
         return r;
     }
@@ -49,9 +49,9 @@ public class IntegerService extends AbstractIntegerService {
     }
 
     @Override
-    public IntegerConfig parseConfig(String[] config) {
-        if (config.length == 1){
-            return new IntegerConfig(Integer.parseInt(config[0]));
+    public IntegerConfig parseConfig(Object config) {
+        if (config instanceof String[] && ((String[]) config).length == 1) {
+            return new IntegerConfig(Integer.parseInt(((String[]) config)[0]));
         }
         throw new IllegalArgumentException("Please provide exactly 1 Integer");
     }

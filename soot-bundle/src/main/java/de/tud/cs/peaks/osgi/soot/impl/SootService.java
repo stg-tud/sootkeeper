@@ -5,16 +5,14 @@ import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import de.tud.cs.peaks.osgi.soot.api.AbstractSootService;
-import de.tud.cs.peaks.osgi.soot.api.SootConfig;
-import de.tud.cs.peaks.osgi.soot.api.SootResult;
+import de.tud.cs.peaks.osgi.soot.api.SootBundleConfig;
+import de.tud.cs.peaks.osgi.soot.api.SootBundleResult;
 import de.tud.cs.peaks.sootconfig.AnalysisTarget;
 import de.tud.cs.peaks.sootconfig.FluentOptions;
+import de.tud.cs.peaks.sootconfig.SootResult;
 import de.tud.cs.peaks.sootconfig.SootRun;
 import org.osgi.framework.BundleContext;
-import soot.G;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.Map;
 
@@ -27,8 +25,15 @@ public class SootService extends AbstractSootService {
     }
 
     @Override
-    public SootConfig parseConfig(String[] conf) {
-        return new SootConfig(42);
+    public SootBundleConfig parseConfig(Object conf) {
+        if (conf instanceof String[]) {
+            FluentOptions options = new FluentOptions().wholeProgramAnalysis().keepLineNumbers().allowPhantomReferences();
+            AnalysisTarget target = new AnalysisTarget().processPath(((String[]) conf)[0]);
+            return new SootBundleConfig(options, target);
+        } else if (conf instanceof SootBundleConfig) {
+            return (SootBundleConfig) conf;
+        }
+        throw new IllegalArgumentException("Could not create config");
     }
 
     @Override
@@ -37,25 +42,17 @@ public class SootService extends AbstractSootService {
     }
 
     @Override
-    public SootResult runAnalysis(IAnalysisConfig config,
-                                  Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>,
-                                          IAnalysisResult> previousResults) {
+    public SootBundleResult runAnalysis(SootBundleConfig config,
+                                        Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>,
+                                                IAnalysisResult> previousResults) {
         System.out.println("Prep. Soot!");
-        try {
-            FluentOptions options = new FluentOptions().wholeProgramAnalysis().keepLineNumbers().allowPhantomReferences();
-            AnalysisTarget target = new AnalysisTarget().processPath("");
-            SootRun sootRun = new SootRun(options, target);
-            System.out.println("Start Soot");
-            de.tud.cs.peaks.sootconfig.SootResult res = sootRun.perform();
-            System.out.println("Soot has run:");
-            System.out.println(res);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        SootRun sootRun = new SootRun(config.getFluentOptions(), config.getAnalysisTarget());
+        SootResult res = sootRun.perform();
+        System.out.println(res.getCompleteOutput());
+        return new SootBundleResult(res);
 
 
-        SootResult r = new SootResult(((SootConfig) config).getValue());
-        return r;
     }
 
     @Override

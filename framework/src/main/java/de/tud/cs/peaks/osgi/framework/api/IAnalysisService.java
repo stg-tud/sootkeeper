@@ -27,7 +27,7 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @param previousResults
 	 * @return
 	 */
-	Result runAnalysis(IAnalysisConfig config, Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>, IAnalysisResult> previousResults);
+	Result runAnalysis(Config config, Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>, IAnalysisResult> previousResults);
 	
 	/**
 	 * 
@@ -49,7 +49,7 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @param config
 	 * @return
 	 */
-	Config parseConfig(String[] config);
+	Config parseConfig(Object config);
 
 	String getApiName();
 }
