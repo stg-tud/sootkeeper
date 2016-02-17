@@ -23,6 +23,12 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 
 	/**
 	 * 
+	 * @return
+     */
+	Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> getApiClass();
+
+	/**
+	 * 
 	 * @param config
 	 * @param previousResults
 	 * @return
@@ -50,6 +56,4 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @return
 	 */
 	Config parseConfig(Object config);
-
-	String getApiName();
 }

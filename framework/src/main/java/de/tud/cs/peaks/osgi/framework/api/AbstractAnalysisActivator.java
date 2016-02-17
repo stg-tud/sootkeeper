@@ -38,7 +38,7 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
 		this.context = context;
 
 		// TODO may want to catch exception here
-		this.reg = context.registerService(getAnalysisService().getApiName(), getAnalysisService(), null);
+		this.reg = context.registerService(getAnalysisService().getApiClass().getName(), getAnalysisService(), null);
 	}
 
 	/**

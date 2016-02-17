@@ -43,7 +43,7 @@ public class HostService {
                 Object service = context.getService(serviceReference);
                 if (service instanceof IAnalysisService) {
                     String shortName = ((IAnalysisService<?, ?>) service).getName();
-                    String className = ((IAnalysisService<?, ?>) service).getApiName();
+                    String className = ((IAnalysisService<?, ?>) service).getApiClass().getName();
                     analyses.put(shortName, className);
                 }
                 context.ungetService(serviceReference);
