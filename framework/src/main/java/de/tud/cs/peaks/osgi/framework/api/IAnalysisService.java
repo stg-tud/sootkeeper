@@ -27,7 +27,7 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @param previousResults
 	 * @return
 	 */
-	Result runAnalysis(Config config, Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>, IAnalysisResult> previousResults);
+	Result runAnalysis(Config config, Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, IAnalysisResult> previousResults);
 	
 	/**
 	 * 
@@ -42,7 +42,7 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @param serviceClass
 	 * @return
 	 */
-	IAnalysisConfig convertConfig(IAnalysisConfig config, Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceClass);
+	IAnalysisConfig convertConfig(IAnalysisConfig config, Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass);
 
 	/**
 	 * 

@@ -43,7 +43,7 @@ public class SootService extends AbstractSootService {
 
     @Override
     public SootBundleResult runAnalysis(SootBundleConfig config,
-                                        Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>,
+                                        Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>,
                                                 IAnalysisResult> previousResults) {
         System.out.println("Prep. Soot!");
 
@@ -57,7 +57,7 @@ public class SootService extends AbstractSootService {
 
     @Override
     public IAnalysisConfig convertConfig(IAnalysisConfig config,
-                                         Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceClass) {
+                                         Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) {
         return config;
     }
 

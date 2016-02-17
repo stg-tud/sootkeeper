@@ -24,5 +24,5 @@ public @interface DependsOn {
 	 * 
 	 * @return
 	 */
-	Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>[] value();
+	Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>[] value();
 }

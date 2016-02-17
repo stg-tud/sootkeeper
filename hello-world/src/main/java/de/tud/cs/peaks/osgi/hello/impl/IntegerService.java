@@ -28,7 +28,7 @@ public class IntegerService extends AbstractIntegerService {
 
     @Override
     public IntegerResult runAnalysis(IntegerConfig config,
-                                     Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>,
+                                     Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>,
                                              IAnalysisResult> previousResults) {
         System.out.println("Start Computing");
         try {
@@ -44,7 +44,7 @@ public class IntegerService extends AbstractIntegerService {
 
     @Override
     public IAnalysisConfig convertConfig(IAnalysisConfig config,
-                                         Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceClass) {
+                                         Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) {
         return config;
     }
 

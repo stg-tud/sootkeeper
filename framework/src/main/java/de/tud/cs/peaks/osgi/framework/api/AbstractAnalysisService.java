@@ -71,12 +71,12 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
             @Override
             public Result call() throws Exception {
 
-                Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>, IAnalysisResult> results = new HashMap<>();
-                Map<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>, Future<IAnalysisResult>> futureResults = new HashMap<>();
+                Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, IAnalysisResult> results = new HashMap<>();
+                Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> futureResults = new HashMap<>();
 
                 DependsOn annotation = AbstractAnalysisService.this.getClass().getAnnotation(DependsOn.class);
 
-                for (Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>> analysisClass : annotation
+                for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysisClass : annotation
                         .value()) {
                     AbstractAnalysisService<IAnalysisResult, IAnalysisConfig> analysis = getServiceInstance(analysisClass);
 
@@ -87,7 +87,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
                     futureResults.put(analysisClass, analysisResult);
                 }
 
-                for (Entry<Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>>, Future<IAnalysisResult>> entry : futureResults
+                for (Entry<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> entry : futureResults
                         .entrySet()) {
                     results.put(entry.getKey(), entry.getValue().get());
                 }
@@ -108,7 +108,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      */
     @SuppressWarnings("unchecked")
     protected synchronized <R extends IAnalysisResult, C extends IAnalysisConfig> AbstractAnalysisService<R, C> getServiceInstance(
-            Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceClass) {
+            Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) {
 
         if (context != null) {
             ServiceReference ref = context.getServiceReference(serviceClass.getName());
@@ -137,7 +137,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
         }
 
         // check whether all required analyses are available
-        for (Class<? extends AbstractAnalysisService<IAnalysisResult, IAnalysisConfig>> analysis : annotation.value()) {
+        for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysis : annotation.value()) {
             ServiceReference ref = context.getServiceReference(analysis.getName());
             if (ref == null) {
                 throw new IllegalStateException("Required AnalysisService " + analysis.getName() + " is not registered");
