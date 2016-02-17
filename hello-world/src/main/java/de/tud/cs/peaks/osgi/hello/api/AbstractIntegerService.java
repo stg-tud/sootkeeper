@@ -12,4 +12,8 @@ public abstract class AbstractIntegerService extends AbstractAnalysisService<Int
 		super(context);
 	}
 
+	@Override
+	public String getApiName() {
+		return AbstractIntegerService.class.getName();
+	}
 }

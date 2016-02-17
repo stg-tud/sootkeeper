@@ -55,5 +55,4 @@ public class IntegerService extends AbstractIntegerService {
         }
         throw new IllegalArgumentException("Please provide exactly 1 Integer");
     }
-
 }
