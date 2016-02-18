@@ -22,7 +22,7 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	String getName();
 
 	/**
-	 * 
+	 *
 	 * @return
      */
 	Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> getApiClass();
@@ -48,7 +48,7 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @param serviceClass
 	 * @return
 	 */
-	IAnalysisConfig convertConfig(IAnalysisConfig config, Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass);
+	IAnalysisConfig convertConfig(Config config, Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass);
 
 	/**
 	 * 

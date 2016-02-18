@@ -43,7 +43,7 @@ public class IntegerService extends AbstractIntegerService {
     }
 
     @Override
-    public IAnalysisConfig convertConfig(IAnalysisConfig config,
+    public IAnalysisConfig convertConfig(IntegerConfig config,
                                          Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) {
         return config;
     }

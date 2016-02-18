@@ -56,7 +56,7 @@ public class SootService extends AbstractSootService {
     }
 
     @Override
-    public IAnalysisConfig convertConfig(IAnalysisConfig config,
+    public IAnalysisConfig convertConfig(SootBundleConfig config,
                                          Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) {
         return config;
     }
