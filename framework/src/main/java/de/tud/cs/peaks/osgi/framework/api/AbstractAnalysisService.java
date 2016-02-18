@@ -41,11 +41,10 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      * @throws IllegalStateException
      */
     protected AbstractAnalysisService(BundleContext context) throws IllegalClassFormatException {
-
-        checkService();
-
         this.results = new ConcurrentHashMap<>();
         this.context = context;
+
+        checkService();
     }
 
     /**
