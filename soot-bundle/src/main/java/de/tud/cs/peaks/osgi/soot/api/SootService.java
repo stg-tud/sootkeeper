@@ -1,12 +1,9 @@
-package de.tud.cs.peaks.osgi.soot.impl;
+package de.tud.cs.peaks.osgi.soot.api;
 
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
 import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
-import de.tud.cs.peaks.osgi.soot.api.AbstractSootService;
-import de.tud.cs.peaks.osgi.soot.api.SootBundleConfig;
-import de.tud.cs.peaks.osgi.soot.api.SootBundleResult;
 import de.tud.cs.peaks.sootconfig.AnalysisTarget;
 import de.tud.cs.peaks.sootconfig.FluentOptions;
 import de.tud.cs.peaks.sootconfig.SootResult;
@@ -17,7 +14,7 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.util.Map;
 
 @DependsOn({})
-public class SootService extends AbstractSootService {
+public class SootService extends AbstractAnalysisService<SootBundleResult, SootBundleConfig> {
     private static final String NAME = "soot";
 
     public SootService(BundleContext context) throws IllegalClassFormatException {

@@ -1,19 +1,16 @@
-package de.tud.cs.peaks.osgi.hello.impl;
+package de.tud.cs.peaks.osgi.hello.api;
 
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
 import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
-import de.tud.cs.peaks.osgi.hello.api.AbstractIntegerService;
-import de.tud.cs.peaks.osgi.hello.api.IntegerConfig;
-import de.tud.cs.peaks.osgi.hello.api.IntegerResult;
 import org.osgi.framework.BundleContext;
 
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.Map;
 
 @DependsOn({})
-public class IntegerService extends AbstractIntegerService {
+public class IntegerService extends AbstractAnalysisService<IntegerResult, IntegerConfig> {
     private static final String NAME = "IntegerAnalysis";
 
     public IntegerService(BundleContext context) throws IllegalStateException, IllegalClassFormatException {

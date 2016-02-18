@@ -4,11 +4,9 @@ import java.lang.instrument.IllegalClassFormatException;
 
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisActivator;
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
-import de.tud.cs.peaks.osgi.framework.api.IAnalysisService;
-import de.tud.cs.peaks.osgi.hello.api.AbstractIntegerService;
 import de.tud.cs.peaks.osgi.hello.api.IntegerConfig;
 import de.tud.cs.peaks.osgi.hello.api.IntegerResult;
-import de.tud.cs.peaks.osgi.hello.impl.IntegerService;
+import de.tud.cs.peaks.osgi.hello.api.IntegerService;
 
 /**
  * 

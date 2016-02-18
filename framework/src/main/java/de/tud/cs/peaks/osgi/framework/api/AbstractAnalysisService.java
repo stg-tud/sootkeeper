@@ -144,4 +144,9 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
             }
         }
     }
+
+    @Override
+    public Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> getApiClass() {
+        return (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>) this.getClass();
+    }
 }

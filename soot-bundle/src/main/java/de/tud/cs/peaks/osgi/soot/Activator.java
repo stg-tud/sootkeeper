@@ -6,7 +6,7 @@ import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisActivator;
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
 import de.tud.cs.peaks.osgi.soot.api.SootBundleConfig;
 import de.tud.cs.peaks.osgi.soot.api.SootBundleResult;
-import de.tud.cs.peaks.osgi.soot.impl.SootService;
+import de.tud.cs.peaks.osgi.soot.api.SootService;
 
 /**
  * 
