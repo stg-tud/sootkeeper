@@ -14,4 +14,8 @@ public class SootBundleResult implements IAnalysisResult{
 	public String toString() {
 		return sootResult.toString();
 	}
+
+	public SootResult getSootResult() {
+		return sootResult;
+	}
 }

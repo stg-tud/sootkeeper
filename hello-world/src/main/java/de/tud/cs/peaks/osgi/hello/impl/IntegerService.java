@@ -49,8 +49,8 @@ public class IntegerService extends AbstractIntegerService {
     }
 
     @Override
-    public IntegerConfig parseConfig(Object config) {
-        if (config instanceof String[] && ((String[]) config).length == 1) {
+    public IntegerConfig parseConfig(String[] config) {
+        if (((String[]) config).length == 1) {
             return new IntegerConfig(Integer.parseInt(((String[]) config)[0]));
         }
         throw new IllegalArgumentException("Please provide exactly 1 Integer");

@@ -25,13 +25,11 @@ public class SootService extends AbstractSootService {
     }
 
     @Override
-    public SootBundleConfig parseConfig(Object conf) {
-        if (conf instanceof String[]) {
+    public SootBundleConfig parseConfig(String[] conf) {
+        if (conf.length > 0) {
             FluentOptions options = new FluentOptions().wholeProgramAnalysis().keepLineNumbers().allowPhantomReferences();
             AnalysisTarget target = new AnalysisTarget().processPath(((String[]) conf)[0]);
             return new SootBundleConfig(options, target);
-        } else if (conf instanceof SootBundleConfig) {
-            return (SootBundleConfig) conf;
         }
         throw new IllegalArgumentException("Could not create config");
     }
