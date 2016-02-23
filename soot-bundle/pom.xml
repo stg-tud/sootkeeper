@@ -47,7 +47,12 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>de.tud.cs.peaks.osgi.soot.api</Export-Package>
+                        <Export-Package>
+                            de.tud.cs.peaks.osgi.soot.api,
+                            soot.*,
+                            heros.*,
+                            de.tud.cs.peaks.sootconfig.*
+                        </Export-Package>
                         <Private-Package>de.tud.cs.peaks.osgi.soot.*</Private-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.soot.Activator</Bundle-Activator>
                         <Import-Package>de.tud.cs.peaks.osgi.framework.api.*</Import-Package>

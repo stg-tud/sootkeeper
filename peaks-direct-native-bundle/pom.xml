@@ -62,9 +62,12 @@
                         </Export-Package>
                         <Private-Package>de.tud.cs.peaks.osgi.peaks.analysis.directNativeUsage.*</Private-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.peaks.analysis.directNativeUsage.Activator</Bundle-Activator>
-                        <Import-Package>de.tud.cs.peaks.osgi.framework.api.*,de.tud.cs.peaks.osgi.soot.api.*</Import-Package>
-                        <Embed-Dependency>artifactId=peaks-core</Embed-Dependency>
-                        <Embed-Transitive>true</Embed-Transitive>
+                        <Import-Package>
+                            de.tud.cs.peaks.osgi.framework.api.*,
+                            de.tud.cs.peaks.osgi.soot.api.*,
+                            de.tud.cs.peaks.sootconfig.*,
+                            soot.*
+                        </Import-Package>
                     </instructions>
                 </configuration>
             </plugin>

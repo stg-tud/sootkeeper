@@ -53,7 +53,10 @@
                         </Export-Package>
                         <Private-Package>de.tud.cs.peaks.osgi.peaks.core.*</Private-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.peaks.core.Activator</Bundle-Activator>
-                        <Import-Package>de.tud.cs.peaks.osgi.framework.api.*,de.tud.cs.peaks.osgi.soot.api.*</Import-Package>
+                        <Import-Package>
+                            de.tud.cs.peaks.osgi.framework.api.*,
+                            de.tud.cs.peaks.osgi.soot.api.*,
+                            org.osgi.framework</Import-Package>
                         <Embed-Dependency>artifactId=peaks-core</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                     </instructions>
