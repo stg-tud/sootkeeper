@@ -68,6 +68,8 @@
                             de.tud.cs.peaks.sootconfig.*,
                             soot.*
                         </Import-Package>
+                        <Embed-Dependency>artifactId=peaks-direct-native</Embed-Dependency>
+                        <Embed-Transitive>true</Embed-Transitive>
                     </instructions>
                 </configuration>
             </plugin>
