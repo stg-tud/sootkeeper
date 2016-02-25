@@ -13,13 +13,17 @@ The use of static analysis allows developers to analyze the source code of a pro
 
 ## Requirements
 * Java 1.8
-* Maven
+* Maven (Version?)
 * soot in your local maven repository (See below)
 * OSGi framework distribution, either [apache felix](https://felix.apache.org/downloads.cgi) or [eclipse equinox](http://download.eclipse.org/equinox/) work
 
 ## Installing soot
 ### From nightly
-Install the current soot [nightly](https://github.com/Sable/soot#how-do-i-obtain-the-nightly-builds) with:
+Download the current [nightly build of Soot](https://github.com/Sable/soot#how-do-i-obtain-the-nightly-builds), for instance using curl:
+
+    curl https://ssebuild.cased.de/nightly/soot/lib/soot-trunk.jar > soot-trunk.jar
+    
+And install it using maven:
 
     mvn org.apache.maven.plugins:maven-install-plugin:install-file -Dfile=soot-trunk.jar -DgroupId=ca.mcgill.sable -DartifactId=soot -Dversion=trunk -Dpackaging=jar
 
