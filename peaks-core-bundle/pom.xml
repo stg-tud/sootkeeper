@@ -9,14 +9,14 @@
 
     <dependencies>
         <dependency>
+            <groupId>de.tud.cs.peaks.osgi</groupId>
+            <artifactId>soot-bundle</artifactId>
+            <version>nightly</version>
+        </dependency>
+        <dependency>
             <groupId>de.tud.cs.peaks</groupId>
             <artifactId>peaks-core</artifactId>
             <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>de.tud.cs.peaks.osgi</groupId>
-            <artifactId>framework</artifactId>
-            <version>nightly</version>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
@@ -42,21 +42,20 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>
-                            de.tud.cs.peaks.osgi.peaks.core.api,
+                        <_exportcontents>
                             de.tud.cs.peaks.exporting,
                             de.tud.cs.peaks.importing,
                             de.tud.cs.peaks.misc,
                             de.tud.cs.peaks.results,
                             de.tud.cs.peaks.toolbox.tags,
                             de.tud.cs.peaks
-                        </Export-Package>
+                        </_exportcontents>
                         <Private-Package>de.tud.cs.peaks.osgi.peaks.core.*</Private-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.peaks.core.Activator</Bundle-Activator>
                         <Import-Package>
-                            de.tud.cs.peaks.osgi.framework.api.*,
-                            de.tud.cs.peaks.osgi.soot.api.*,
-                            org.osgi.framework</Import-Package>
+                            org.osgi.framework,
+                            soot.*
+                        </Import-Package>
                         <Embed-Dependency>artifactId=peaks-core</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                     </instructions>

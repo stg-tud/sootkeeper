@@ -51,21 +51,18 @@
                 <extensions>true</extensions>
                 <configuration>
                     <instructions>
-                        <Export-Package>
-                            de.tud.cs.peaks.osgi.peaks.core.api,
-                            de.tud.cs.peaks.exporting,
-                            de.tud.cs.peaks.importing,
-                            de.tud.cs.peaks.misc,
-                            de.tud.cs.peaks.results,
-                            de.tud.cs.peaks.toolbox.tags,
-                            de.tud.cs.peaks
-                        </Export-Package>
                         <Private-Package>de.tud.cs.peaks.osgi.peaks.analysis.directNativeUsage.*</Private-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.peaks.analysis.directNativeUsage.Activator</Bundle-Activator>
                         <Import-Package>
                             de.tud.cs.peaks.osgi.framework.api.*,
                             de.tud.cs.peaks.osgi.soot.api.*,
                             de.tud.cs.peaks.sootconfig.*,
+                            de.tud.cs.peaks.exporting,
+                            de.tud.cs.peaks.importing,
+                            de.tud.cs.peaks.misc,
+                            de.tud.cs.peaks.results,
+                            de.tud.cs.peaks.toolbox.tags,
+                            de.tud.cs.peaks,
                             soot.*
                         </Import-Package>
                         <Embed-Dependency>artifactId=peaks-direct-native</Embed-Dependency>
