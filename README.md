@@ -14,6 +14,7 @@ The use of static analysis allows developers to analyze the source code of a pro
 ## Requirements
 * Java 1.8
 * Maven (Version?)
+* Ant (If you want to install soot from source)
 * soot in your local maven repository (See below)
 * OSGi framework distribution, either [apache felix](https://felix.apache.org/downloads.cgi) or [eclipse equinox](http://download.eclipse.org/equinox/) work
 
