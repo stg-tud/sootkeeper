@@ -41,10 +41,18 @@ If you want to install the latest version from git, clone the repository with:
     git clone https://github.com/stg-tud/sootkeeper.git
 
 ## Compiling and installing
-You have to run
-
-    mvn install    
-in the framework, container and soot-bundle folders.
+Change into into the `framework`, `container`, and `soot-bundle` folders of the sootkeeper checkout and run `mvn install`.
+Or simple past this into your console:
+    
+    cd framework
+    mvn install 
+    cd ..
+    cd container
+    mvn install
+    cd ..
+    cd soot-bundle
+    mvn install
+    cd ..
 
 ## Running
 ### In IntelliJ IDEA
