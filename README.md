@@ -42,7 +42,7 @@ If you want to install the latest version from git, clone the repository with:
 
 ## Compiling and installing
 Change into into the `framework`, `container`, and `soot-bundle` folders of the sootkeeper checkout and run `mvn install`.
-Or simple paste this into your console:
+Or simply paste this into your console:
     
     cd framework
     mvn install 
