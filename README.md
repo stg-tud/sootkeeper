@@ -17,7 +17,7 @@ The use of static analysis allows developers to analyze the source code of a pro
 * Ant (If you want to install soot from source)
 * soot in your local maven repository (See below)
 * OSGi framework distribution, either [apache felix](https://felix.apache.org/downloads.cgi) or [eclipse equinox](http://download.eclipse.org/equinox/) work
-* [SootKeeper](https://github.com/stg-tud/sootconfig) in your local maven repository
+* [SootConfig](https://github.com/stg-tud/sootconfig) in your local maven repository
 
 ## Installing soot
 ### From nightly
