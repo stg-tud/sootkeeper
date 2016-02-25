@@ -13,13 +13,19 @@ The use of static analysis allows developers to analyze the source code of a pro
 
 ## Requirements
 * Java 1.8
-* Maven
+* Maven (Version?)
+* Ant (If you want to install soot from source)
 * soot in your local maven repository (See below)
 * OSGi framework distribution, either [apache felix](https://felix.apache.org/downloads.cgi) or [eclipse equinox](http://download.eclipse.org/equinox/) work
+* [SootConfig](https://github.com/stg-tud/sootconfig) in your local maven repository
 
 ## Installing soot
 ### From nightly
-Install the current soot [nightly](https://github.com/Sable/soot#how-do-i-obtain-the-nightly-builds) with:
+Download the current [nightly build of Soot](https://github.com/Sable/soot#how-do-i-obtain-the-nightly-builds), for instance using curl:
+
+    curl https://ssebuild.cased.de/nightly/soot/lib/soot-trunk.jar > soot-trunk.jar
+    
+And install it using maven:
 
     mvn org.apache.maven.plugins:maven-install-plugin:install-file -Dfile=soot-trunk.jar -DgroupId=ca.mcgill.sable -DartifactId=soot -Dversion=trunk -Dpackaging=jar
 
@@ -35,10 +41,18 @@ If you want to install the latest version from git, clone the repository with:
     git clone https://github.com/stg-tud/sootkeeper.git
 
 ## Compiling and installing
-You have to run
-
-    mvn install    
-in the framework, container and soot-bundle folders.
+Change into into the `framework`, `container`, and `soot-bundle` folders of the sootkeeper checkout and run `mvn install`.
+Or simply paste this into your console:
+    
+    cd framework
+    mvn install 
+    cd ..
+    cd container
+    mvn install
+    cd ..
+    cd soot-bundle
+    mvn install
+    cd ..
 
 ## Running
 ### In IntelliJ IDEA
