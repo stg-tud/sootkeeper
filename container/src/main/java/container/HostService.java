@@ -20,6 +20,7 @@ public class HostService {
      * This table maps the different Analysis names to their service representation
      */
     private final Map<String, String> analyses;
+    private String[] previous;
 
     public HostService(BundleContext context) {
         this.context = context;
@@ -61,7 +62,8 @@ public class HostService {
         runAnalysis(params);
     }
 
-    private void runAnalysis(String... params) {
+    public void runAnalysis(String... params) {
+        previous = params.clone();
         findAnalyses();
         if (params.length < 1){
             System.out.println("Please provide an analysis name.");
@@ -83,5 +85,13 @@ public class HostService {
         IAnalysisConfig iAnalysisConfig = service.parseConfig(Arrays.copyOfRange(params,1,params.length));
         Future<IAnalysisResult> r = service.performAnalysis(iAnalysisConfig);
         context.ungetService(serviceReference);
+    }
+
+    public void rep(){
+        if (previous != null){
+            runAnalysis(previous);
+        } else {
+            System.out.println("Use real commands first.");
+        }
     }
 }

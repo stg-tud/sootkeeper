@@ -5,7 +5,9 @@
     <artifactId>peaks-direct-native-bundle</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>bundle</packaging>
-
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <dependencies>
         <dependency>
             <groupId>de.tud.cs.peaks</groupId>
@@ -40,8 +42,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
             <plugin>

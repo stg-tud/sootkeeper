@@ -12,7 +12,7 @@ public class HostActivator implements BundleActivator {
     private static final String OSGI_COMMAND_SCOPE = "osgi.command.scope";
     private static final String OSGI_COMMAND_FUNCTION = "osgi.command.function";
     private static final String SCOPE = "sootkeeper";
-    private static final String[] COMMAND_FUNCTIONS = {"listAnalyses", "la", "ra", "runAnalysis"};
+    private static final String[] COMMAND_FUNCTIONS = {"listAnalyses", "la", "ra", "runAnalysis", "rep"};
 
     private ServiceRegistration<?> registration;
 

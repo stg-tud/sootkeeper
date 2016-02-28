@@ -47,7 +47,7 @@ public class DirectNativeUsageService extends AbstractSootAnalysis<DirectNativeR
     public SootBundleConfig parseConfig(String[] conf) {
         if (conf.length > 0) {
             FluentOptions options = new FluentOptions().wholeProgramAnalysis().keepLineNumbers().allowPhantomReferences();
-            AnalysisTarget target = new AnalysisTarget().processPath(((String[]) conf)[0]);
+            AnalysisTarget target = new AnalysisTarget().processPath(conf[0]);
             return new SootBundleConfig(options, target);
         }
         throw new IllegalArgumentException("Could not create config");
