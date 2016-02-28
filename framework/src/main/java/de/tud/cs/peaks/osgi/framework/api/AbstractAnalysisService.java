@@ -4,13 +4,13 @@ import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
 import java.lang.instrument.IllegalClassFormatException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * @param <Result>
@@ -33,7 +33,9 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     /**
      *
      */
-    private BundleContext context;
+    private final BundleContext context;
+    private List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> dependOnAnalyses;
+
 
     /**
      * @param context
@@ -68,15 +70,12 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
         Future<Result> result = POOL.submit(new Callable<Result>() {
 
             @Override
-            public Result call() throws Exception {
+            public Result call() throws InterruptedException, ExecutionException {
 
                 Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, IAnalysisResult> results = new HashMap<>();
                 Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> futureResults = new HashMap<>();
 
-                DependsOn annotation = AbstractAnalysisService.this.getClass().getAnnotation(DependsOn.class);
-
-                for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysisClass : annotation
-                        .value()) {
+                for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysisClass : dependOnAnalyses) {
                     AbstractAnalysisService<IAnalysisResult, IAnalysisConfig> analysis = getServiceInstance(analysisClass);
 
                     IAnalysisConfig analysisConfig = convertConfig(config, analysisClass);
@@ -86,7 +85,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
                     futureResults.put(analysisClass, analysisResult);
                 }
 
-                for (Entry<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> entry : futureResults
+                for (Map.Entry<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> entry : futureResults
                         .entrySet()) {
                     results.put(entry.getKey(), entry.getValue().get());
                 }
@@ -108,7 +107,6 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     @SuppressWarnings("unchecked")
     protected synchronized <R extends IAnalysisResult, C extends IAnalysisConfig> AbstractAnalysisService<R, C> getServiceInstance(
             Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) {
-
         if (context != null) {
             ServiceReference ref = context.getServiceReference(serviceClass.getName());
             if (ref != null) {
@@ -120,7 +118,6 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
                 }
             }
         }
-
         throw new IllegalArgumentException(serviceClass.getName() + " is not a registered service");
     }
 
@@ -130,13 +127,13 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     private void checkService() throws IllegalClassFormatException {
 
         // Get annotation for required analyses
-        DependsOn annotation = this.getClass().getAnnotation(DependsOn.class);
+        DependsOn annotation = getClass().getAnnotation(DependsOn.class);
         if (annotation == null) {
-            throw new IllegalClassFormatException(this.getClass().getName() + " has no @DependsOn annotation");
+            throw new IllegalClassFormatException(getClass().getName() + " has no @DependsOn annotation");
         }
-
+        dependOnAnalyses = Arrays.asList(annotation.value());
         // check whether all required analyses are available
-        for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysis : annotation.value()) {
+        for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysis : dependOnAnalyses) {
             ServiceReference ref = context.getServiceReference(analysis.getName());
             if (ref == null) {
                 throw new IllegalStateException("Required AnalysisService " + analysis.getName() + " is not registered");
@@ -145,7 +142,48 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     }
 
     @Override
+    public List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses() {
+        return Collections.unmodifiableList(dependOnAnalyses);
+    }
+
+    @Override
     public Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> getApiClass() {
         return (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>) this.getClass();
     }
+
+    @Override
+    public void clearCache() {
+        System.out.println("Clearing cache of: " + getName());
+        results.clear();
+        try {
+            Arrays.stream(context.getServiceReferences((String) null, null))
+                    .map(context::getService)
+                    .filter(s -> s instanceof IAnalysisService)
+                    .map(s -> ((IAnalysisService<?, ?>) s))
+                    .filter(this::containsDependingAnalyses)
+                    .forEach(IAnalysisService::clearCache);
+            // Its some fucking classloader thing Don't forget  !!!
+        } catch (InvalidSyntaxException ignored) {
+            // Will not happen
+        }
+    }
+
+    private boolean containsDependingAnalyses(IAnalysisService<?, ?> service) {
+        return service.getDependOnAnalyses()
+                .stream()
+                .map(this::getServiceInstanceOrNull)
+                .filter(s -> s != null).collect(Collectors.toList())
+                .contains(getServiceInstance((Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>) getClass()));
+    }
+
+    private <R extends IAnalysisResult, C extends IAnalysisConfig> AbstractAnalysisService<R, C> getServiceInstanceOrNull(
+            Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) {
+        try {
+            return getServiceInstance(serviceClass);
+        } catch (IllegalArgumentException ignored) {
+            return null;
+        }
+    }
+
+
 }

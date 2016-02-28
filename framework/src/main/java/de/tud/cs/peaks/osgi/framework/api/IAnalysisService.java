@@ -1,5 +1,6 @@
 package de.tud.cs.peaks.osgi.framework.api;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -20,6 +21,8 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @return
 	 */
 	String getName();
+
+	List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses();
 
 	/**
 	 *
@@ -56,4 +59,6 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @return
 	 */
 	Config parseConfig(String[] config);
+
+	void clearCache();
 }

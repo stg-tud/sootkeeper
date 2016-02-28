@@ -23,7 +23,7 @@ public interface IAnalysisActivator<Result extends IAnalysisResult, Config exten
 	 * @throws IllegalClassFormatException 
 	 * @throws IllegalStateException 
 	 */
-	AbstractAnalysisService<Result, Config> getAnalysisService() throws IllegalStateException, IllegalClassFormatException;
+	AbstractAnalysisService<Result, Config> getAnalysisService() throws IllegalClassFormatException;
 
 	
 	/**
