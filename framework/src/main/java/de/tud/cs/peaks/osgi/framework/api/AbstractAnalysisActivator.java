@@ -13,31 +13,36 @@ import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 
 /**
- * @param <Result>
- * @param <Config>
- * @author Florian Kuebler
+ * An abstract {@link org.osgi.framework.BundleActivator} for the use of an {@link IAnalysisService}.
+ * It handles the AnalysisService registration.
+ *
+ * @param <Result> The type of the {@link IAnalysisResult} the corresponding AnalysisService produces.
+ * @param <Config> The type of the {@link IAnalysisConfig} the corresponding AnalysisService uses.
+ * @author Florian Kuebler, Patrick Mueller
  */
 public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, Config extends IAnalysisConfig>
         implements IAnalysisActivator<Result, Config> {
 
     /**
-     *
+     * The context of this bundle.
      */
     private BundleContext context = null;
 
     /**
-     *
+     * The registration of the AnalysisService that belongs to this Activator.
      */
     private ServiceRegistration reg = null;
 
     /**
      * {@inheritDoc}
      *
-     * @throws IllegalClassFormatException
-     * @throws IllegalStateException
+     * @throws IllegalClassFormatException when the concrete service does not have a @DependsOn annotation.
+     * @throws IllegalStateException       if an AnalysisService required by the @DependsOn annotation is not registered in the context.
+     * @see AbstractAnalysisService
+     * @see AbstractAnalysisService#checkService()
      */
     @Override
-    public void start(BundleContext context) throws IllegalClassFormatException {
+    public void start(BundleContext context) throws IllegalClassFormatException, IllegalStateException {
         this.context = context;
 
         // TODO may want to catch exception here
@@ -54,7 +59,6 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
     @Override
     public void stop(BundleContext context) throws IllegalClassFormatException {
         this.context = context;
-        ((IAnalysisService<?, ?>) context.getService(reg.getReference())).clearCache();
         reg.unregister();
     }
 

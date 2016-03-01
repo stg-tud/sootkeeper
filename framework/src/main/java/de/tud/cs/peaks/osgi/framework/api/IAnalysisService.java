@@ -23,8 +23,6 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 */
 	String getName();
 
-	List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses();
-
 	/**
 	 *
 	 * @return
@@ -60,8 +58,6 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	 * @return
 	 */
 	Config parseConfig(String[] config);
-
-	void clearCache();
 
 	Bundle getBundle();
 }
