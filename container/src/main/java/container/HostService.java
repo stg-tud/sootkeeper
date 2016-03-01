@@ -3,13 +3,12 @@ package container;
 import de.tud.cs.peaks.osgi.framework.api.IAnalysisService;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
+import org.apache.felix.service.command.Descriptor;
+import org.osgi.framework.*;
+import org.osgi.framework.launch.Framework;
+import org.osgi.framework.wiring.FrameworkWiring;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.Future;
 
 
@@ -62,10 +61,11 @@ public class HostService {
         runAnalysis(params);
     }
 
+    @Descriptor("Runs Analyses")
     public void runAnalysis(String... params) {
         previous = params.clone();
         findAnalyses();
-        if (params.length < 1){
+        if (params.length < 1) {
             System.out.println("Please provide an analysis name.");
             return;
         }
@@ -82,16 +82,43 @@ public class HostService {
 
         IAnalysisService<IAnalysisResult, IAnalysisConfig> service = context.getService(serviceReference);
 
-        IAnalysisConfig iAnalysisConfig = service.parseConfig(Arrays.copyOfRange(params,1,params.length));
+        IAnalysisConfig iAnalysisConfig = service.parseConfig(Arrays.copyOfRange(params, 1, params.length));
         Future<IAnalysisResult> r = service.performAnalysis(iAnalysisConfig);
         context.ungetService(serviceReference);
     }
 
-    public void rep(){
-        if (previous != null){
+    public void rep() {
+        if (previous != null) {
             runAnalysis(previous);
         } else {
             System.out.println("Use real commands first.");
         }
+    }
+
+    public void updateAnalysis(String name) {
+        try {
+            findAnalyses();
+            String classNameOfService = analyses.get(name);
+            if (classNameOfService == null) {
+                System.out.println("Could find: " + name);
+                return;
+            }
+            ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceReference =
+                    (ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>>)
+                            context.getServiceReference(classNameOfService);
+
+
+            IAnalysisService<IAnalysisResult, IAnalysisConfig> service = context.getService(serviceReference);
+            Bundle bu = service.getBundle();
+            service.getBundle().update();
+            Collection<Bundle> bundles = Collections.singleton(service.getBundle());
+            context.getBundle(0L).adapt(FrameworkWiring.class).refreshBundles(Collections.singleton(service.getBundle()));
+        } catch (BundleException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void ua(String name) {
+        updateAnalysis(name);
     }
 }
