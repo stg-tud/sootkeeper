@@ -42,8 +42,7 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
 
         // TODO may want to catch exception here
         AbstractAnalysisService<Result, Config> analysisService = getAnalysisService();
-        this.reg = context.registerService(analysisService.getApiClass().getName(), analysisService, null);
-        System.out.printf("");
+        reg = context.registerService(analysisService.getApiClass().getName(), analysisService, null);
     }
 
 
@@ -56,9 +55,7 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
     public void stop(BundleContext context) throws IllegalClassFormatException {
         this.context = context;
         ((IAnalysisService<?, ?>) context.getService(reg.getReference())).clearCache();
-        this.reg.unregister();
-
-        //TODO stop service
+        reg.unregister();
     }
 
     /**

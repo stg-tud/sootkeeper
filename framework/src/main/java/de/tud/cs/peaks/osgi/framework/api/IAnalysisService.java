@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
+import org.osgi.framework.Bundle;
 
 /**
  * 
@@ -61,4 +62,6 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
 	Config parseConfig(String[] config);
 
 	void clearCache();
+
+	Bundle getBundle();
 }

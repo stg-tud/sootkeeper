@@ -3,6 +3,7 @@ package de.tud.cs.peaks.osgi.framework.api;
 import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -34,6 +35,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      *
      */
     private final BundleContext context;
+    private final Bundle bundle;
     private List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> dependOnAnalyses;
 
 
@@ -45,16 +47,10 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     protected AbstractAnalysisService(BundleContext context) throws IllegalClassFormatException {
         this.results = new ConcurrentHashMap<>();
         this.context = context;
-
+        this.bundle = context.getBundle();
         checkService();
     }
 
-    /**
-     * @return
-     */
-    public BundleContext getBundleContext() {
-        return this.context;
-    }
 
     /**
      * {@inheritDoc}
@@ -88,6 +84,8 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
                 for (Map.Entry<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> entry : futureResults
                         .entrySet()) {
                     results.put(entry.getKey(), entry.getValue().get());
+                    ServiceReference<?> sr = context.getServiceReference(entry.getKey());
+                    context.ungetService(sr);
                 }
 
                 return runAnalysis(config, results);
@@ -153,7 +151,6 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
 
     @Override
     public void clearCache() {
-        System.out.println("Clearing cache of: " + getName());
         results.clear();
         try {
             Arrays.stream(context.getServiceReferences((String) null, null))
@@ -162,7 +159,6 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
                     .map(s -> ((IAnalysisService<?, ?>) s))
                     .filter(this::containsDependingAnalyses)
                     .forEach(IAnalysisService::clearCache);
-            // Its some fucking classloader thing Don't forget  !!!
         } catch (InvalidSyntaxException ignored) {
             // Will not happen
         }
@@ -183,6 +179,12 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
         } catch (IllegalArgumentException ignored) {
             return null;
         }
+    }
+
+
+    @Override
+    public Bundle getBundle() {
+        return bundle;
     }
 
 
