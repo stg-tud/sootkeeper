@@ -50,7 +50,15 @@
                         <_exportcontents>
                             soot.*,
                             heros.*,
-                            de.tud.cs.peaks.sootconfig.*
+                            de.tud.cs.peaks.sootconfig.*,
+                            org.objectweb.asm.*,
+                            beaver,
+                            org.jf.dexlib2.*,
+                            org.jf.util.*,
+                            polyglot.*,
+                            com.google.common.*,
+                            org.slf4j.*,
+                            java_cup.runtime
                         </_exportcontents>
                         <Export-Package>
                             de.tud.cs.peaks.osgi.soot.api,
