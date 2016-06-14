@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.concurrent.Future;
 
 
-public class HostService {
+class HostService {
 
     private final BundleContext context;
     /**
@@ -20,11 +20,15 @@ public class HostService {
     private final Map<String, String> analyses;
     private String[] previous;
 
-    public HostService(BundleContext context) {
+    HostService(BundleContext context) {
         this.context = context;
         analyses = new HashMap<>();
     }
 
+    /**
+     * This lists the available Analyses
+     * Is bound to the OSGi Commandline
+     */
     public void listAnalyses() {
         findAnalyses();
         System.out.println("Available analyses:");
@@ -34,6 +38,9 @@ public class HostService {
         }
     }
 
+    /**
+     * Queries the OSGi Context for registered analysis Services and saves them in a Table
+     */
     private void findAnalyses() {
         analyses.clear();
         try {
@@ -52,15 +59,28 @@ public class HostService {
         }
     }
 
+    /**
+     * Is bound to the OSGi Commandline
+     * @see HostService#listAnalyses()
+     */
     public void la() {
         listAnalyses();
     }
 
+    /**
+     * Is bound to the OSGi Commandline
+     * @see HostService#runAnalysis(String...)
+     */
     public void ra(String... params) {
         runAnalysis(params);
     }
 
-    @Descriptor("Runs Analyses")
+    /**
+     * Runs the given Analysis
+     *
+     * Is bound to the OSGi Commandline
+     * @param params the first entry is the name of the analysis to run, the following entries are optional arguments to the analysis
+     */
     public void runAnalysis(String... params) {
         previous = params.clone();
         findAnalyses();
@@ -86,6 +106,10 @@ public class HostService {
         context.ungetService(serviceReference);
     }
 
+    /**
+     * Repeats the previous Analysis with the same arguments, e.g. after reloading
+     * Is bound to the OSGi Commandline
+     */
     public void rep() {
         if (previous != null) {
             runAnalysis(previous);
@@ -94,6 +118,11 @@ public class HostService {
         }
     }
 
+    /**
+     * Forces the OSGi framework to reload the given Analysis from its jar, this is done recursively for all dependent analyses
+     * Is bound to the OSGi Commandline
+     * @param name the analysis to reload
+     */
     public void updateAnalysis(String name) {
         try {
             findAnalyses();
@@ -105,18 +134,18 @@ public class HostService {
             ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceReference =
                     (ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>>)
                             context.getServiceReference(classNameOfService);
-
-
             IAnalysisService<IAnalysisResult, IAnalysisConfig> service = context.getService(serviceReference);
-            Bundle bu = service.getBundle();
             service.getBundle().update();
-            Collection<Bundle> bundles = Collections.singleton(service.getBundle());
             context.getBundle(0L).adapt(FrameworkWiring.class).refreshBundles(Collections.singleton(service.getBundle()));
         } catch (BundleException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     *
+     * @see HostService#updateAnalysis(String)
+     */
     public void ua(String name) {
         updateAnalysis(name);
     }
