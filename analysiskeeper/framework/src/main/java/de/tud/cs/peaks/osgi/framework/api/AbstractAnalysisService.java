@@ -5,13 +5,11 @@ import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
 
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 /**
  * An abstract class for AnalysisServices. Concrete implementations MUST declare an {@link DependsOn} annotation indicating on which analyses the service depends on.
@@ -114,14 +112,6 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      * {@inheritDoc}
      */
     @Override
-    public Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> getApiClass() {
-        return (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>) this.getClass();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
     public Bundle getBundle() {
         return bundle;
     }
@@ -161,7 +151,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      * @param serviceClass the class of the service to unget.
      * @throws IllegalArgumentException if no service is registered under the given class or the service is no {@link AbstractAnalysisService}.
      */
-    protected synchronized void ungetService(
+    private synchronized void ungetService(
             Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) throws IllegalArgumentException {
         if (context != null) {
             ServiceReference ref = context.getServiceReference(serviceClass.getName());

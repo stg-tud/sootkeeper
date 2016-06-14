@@ -1,34 +1,29 @@
 package de.tud.cs.peaks.osgi.framework.api;
 
-import java.lang.instrument.IllegalClassFormatException;
-
+import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
+import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
-import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
+import java.lang.instrument.IllegalClassFormatException;
 
 /**
- * 
- * @author Florian Kuebler
+ * Provides an BundleActivator Interface specific to Analyses
  *
- * @param <Result>
- * @param <Config>
+ * @author Florian Kuebler
+ * @see IAnalysisService
  */
-public interface IAnalysisActivator<Result extends IAnalysisResult, Config extends IAnalysisConfig> extends BundleActivator{
+public interface IAnalysisActivator<Result extends IAnalysisResult, Config extends IAnalysisConfig> extends BundleActivator {
 
-	/**
-	 * 
-	 * @return
-	 * @throws IllegalClassFormatException 
-	 * @throws IllegalStateException 
-	 */
-	AbstractAnalysisService<Result, Config> getAnalysisService() throws IllegalClassFormatException;
+    /**
+     * Returns a Analysis Service Object which will be registered in OSGi
+     *
+     * @param bundleContext the current OSGi BundleContext
+     * @return the corresponding analysisService
+     * @throws IllegalClassFormatException when the concrete service does not have a {@link de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn} annotation.
+     * @throws IllegalStateException       if an AnalysisService required by the {@link de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn} annotation is not registered in the context.
+     * @see de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn
+     */
+    AbstractAnalysisService<Result, Config> getAnalysisService(BundleContext bundleContext) throws IllegalStateException, IllegalClassFormatException;
 
-	
-	/**
-	 * 
-	 * @return
-	 */
-	BundleContext getBundleContext();
 }

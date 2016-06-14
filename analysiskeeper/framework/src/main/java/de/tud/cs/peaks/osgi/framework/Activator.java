@@ -4,7 +4,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
 /**
- * 
+ * This is just a stub to satisfy OSGi
+ *
  * @author Florian Kuebler
  *
  */

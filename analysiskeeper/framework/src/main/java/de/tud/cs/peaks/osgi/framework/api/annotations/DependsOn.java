@@ -1,28 +1,26 @@
 package de.tud.cs.peaks.osgi.framework.api.annotations;
 
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Target;
-
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 
+import java.lang.annotation.*;
+
 /**
- * 
- * @author Florian Kuebler
+ * With this annotation you must annotate analyses, so we put an annotation on your annotation so you can annotate while you annotate
  *
+ * @author Florian Kuebler
+ * @author Patrick Müller
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @Inherited
 public @interface DependsOn {
 
-	/**
-	 * 
-	 * @return
-	 */
-	Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>[] value();
+    /**
+     * The value of this annotation
+     *
+     * @return The value of this annotation
+     */
+    Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>[] value();
 }

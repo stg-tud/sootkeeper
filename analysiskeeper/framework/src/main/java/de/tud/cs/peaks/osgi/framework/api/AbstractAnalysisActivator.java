@@ -1,16 +1,11 @@
 package de.tud.cs.peaks.osgi.framework.api;
 
-import java.lang.instrument.IllegalClassFormatException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.InvalidSyntaxException;
-import org.osgi.framework.ServiceReference;
-import org.osgi.framework.ServiceRegistration;
-
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceRegistration;
+
+import java.lang.instrument.IllegalClassFormatException;
 
 /**
  * An abstract {@link org.osgi.framework.BundleActivator} for the use of an {@link IAnalysisService}.
@@ -36,18 +31,14 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
     /**
      * {@inheritDoc}
      *
-     * @throws IllegalClassFormatException when the concrete service does not have a @DependsOn annotation.
-     * @throws IllegalStateException       if an AnalysisService required by the @DependsOn annotation is not registered in the context.
      * @see AbstractAnalysisService
      * @see AbstractAnalysisService#checkService()
      */
     @Override
     public void start(BundleContext context) throws IllegalClassFormatException, IllegalStateException {
         this.context = context;
-
-        // TODO may want to catch exception here
-        AbstractAnalysisService<Result, Config> analysisService = getAnalysisService();
-        reg = context.registerService(analysisService.getApiClass().getName(), analysisService, null);
+        AbstractAnalysisService<Result, Config> analysisService = getAnalysisService(context);
+        reg = context.registerService(analysisService.getClass().getName(), analysisService, null);
     }
 
 
@@ -62,12 +53,5 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
         reg.unregister();
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public BundleContext getBundleContext() {
-        return this.context;
-    }
 
 }

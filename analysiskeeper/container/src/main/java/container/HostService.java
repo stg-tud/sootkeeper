@@ -5,7 +5,6 @@ import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.apache.felix.service.command.Descriptor;
 import org.osgi.framework.*;
-import org.osgi.framework.launch.Framework;
 import org.osgi.framework.wiring.FrameworkWiring;
 
 import java.util.*;
@@ -43,7 +42,7 @@ public class HostService {
                 Object service = context.getService(serviceReference);
                 if (service instanceof IAnalysisService) {
                     String shortName = ((IAnalysisService<?, ?>) service).getName();
-                    String className = ((IAnalysisService<?, ?>) service).getApiClass().getName();
+                    String className = service.getClass().getName();
                     analyses.put(shortName, className);
                 }
                 context.ungetService(serviceReference);
