@@ -13,7 +13,7 @@ The use of static analysis allows developers to analyze the source code of a pro
 
 ## Requirements
 * Java 1.8
-* Maven (Version?)
+* Maven (At least Version 2)
 * Ant (If you want to install soot from source)
 * soot in your local maven repository (See below)
 * OSGi framework distribution, either [apache felix](https://felix.apache.org/downloads.cgi) or [eclipse equinox](http://download.eclipse.org/equinox/) work
@@ -41,19 +41,7 @@ If you want to install the latest version from git, clone the repository with:
     git clone https://github.com/stg-tud/sootkeeper.git
 
 ## Compiling and installing
-Change into into the `framework`, `container`, and `soot-bundle` folders of the sootkeeper checkout and run `mvn install`.
-Or simply paste this into your console:
-    
-    cd framework
-    mvn install 
-    cd ..
-    cd container
-    mvn install
-    cd ..
-    cd soot-bundle
-    mvn install
-    cd ..
-
+Simply use `mvn package`. The Resulting jars will be in the top level out directory.
 ## Running
 ### In IntelliJ IDEA
 In IntelliJ IDEA go to `Run > Edit Configurations...`, click on `+` and select `OSGi Bundles`.
@@ -70,7 +58,7 @@ TODO
 ### Manually
 For this example we are going to use the felix framework.
 
-Copy the built jars from the different target folders to the bundle folder of the felix framework.
+Copy the built jars from the out folder to the bundle folder of the felix framework.
 Run felix using in the top level folder of the felix distribution.
 
     java -jar bin/felix.jar

@@ -17,4 +17,7 @@
         <module>container</module>
         <module>framework</module>
     </modules>
+    <properties>
+        <main.basedir>{$basedir}/../../</main.basedir>
+    </properties>
 </project>

@@ -17,7 +17,9 @@
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <main.basedir>{$basedir}</main.basedir>
     </properties>
+
     <build>
         <pluginManagement>
             <plugins>
@@ -28,6 +30,29 @@
                         <source>1.8</source>
                         <target>1.8</target>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <executions>
+                        <execution>
+                            <id>copy-files-on-build</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>copy-resources</goal>
+                            </goals>
+                            <configuration>
+                                <outputDirectory>${main.basedir}/out/</outputDirectory>
+                                <resources>
+                                    <resource>
+                                        <directory>${basedir}/target/</directory>
+                                        <include>*.jar</include>
+                                        <filtering>false</filtering>
+                                    </resource>
+                                </resources>
+                            </configuration>
+                        </execution>
+                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

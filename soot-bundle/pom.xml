@@ -25,6 +25,9 @@
             <version>1.0</version>
         </dependency>
     </dependencies>
+    <properties>
+        <main.basedir>{$basedir}/../../</main.basedir>
+    </properties>
     <build>
         <plugins>
             <plugin>
