@@ -21,3 +21,6 @@ hello-world/target
 /out/
 
 target/
+.project
+.settings
+.classpath
