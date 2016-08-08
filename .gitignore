@@ -25,3 +25,5 @@ target/
 .settings
 .classpath
 hello-world/bin
+analysiskeeper/container/bin
+analysiskeeper/framework/bin
