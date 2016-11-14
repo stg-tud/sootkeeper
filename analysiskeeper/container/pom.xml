@@ -22,7 +22,10 @@
                     <instructions>
                         <Bundle-SymbolicName>Container</Bundle-SymbolicName>
                         <Bundle-Version>1.0</Bundle-Version>
-                        <Import-Package>de.tud.cs.peaks.osgi.framework.api.*,org.osgi.framework,org.osgi.framework.wiring</Import-Package>
+                        <Import-Package>
+                            de.tud.cs.peaks.osgi.framework.api.*,
+                            org.osgi.framework,
+                            org.osgi.framework.wiring</Import-Package>
                         <Bundle-Activator>container.HostActivator</Bundle-Activator>
                     </instructions>
                 </configuration>
@@ -35,7 +38,6 @@
             <artifactId>org.apache.felix.gogo.runtime</artifactId>
             <version>0.10.0</version>
         </dependency>
-        
         <dependency>
         	<groupId>de.tu-darmstadt.stg</groupId>
         	<artifactId>framework</artifactId>

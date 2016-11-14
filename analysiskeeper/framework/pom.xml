@@ -25,12 +25,22 @@
                         <Export-Package>
                             de.tud.cs.peaks.osgi.framework.api.*
                         </Export-Package>
-                        <Import-Package>org.osgi.framework</Import-Package>
+                        <Import-Package>
+                            com.google.common.base.*,
+                            org.osgi.framework
+                        </Import-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.framework.Activator</Bundle-Activator>
                     </instructions>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>20.0</version>
+        </dependency>
+    </dependencies>
     <groupId>de.tu-darmstadt.stg</groupId>
 </project>

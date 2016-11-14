@@ -1,5 +1,6 @@
 package de.tud.cs.peaks.osgi.framework.api;
 
+import com.google.common.base.Stopwatch;
 import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
@@ -68,9 +69,11 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      */
     @Override
     public final Future<Result> performAnalysis(final Config config) {
+        final Stopwatch overall = Stopwatch.createStarted();
 
         if (results.containsKey(config)) {
-            System.out.println("Result cached: " + config);
+            overall.stop();
+            System.out.println("Result cached: " + config + " (" + overall.toString() + ")");
             return results.get(config);
         }
 
@@ -98,8 +101,12 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
                     results.put(entry.getKey(), entry.getValue().get());
                     ungetService(entry.getKey());
                 }
-
-                return runAnalysis(config, results);
+                Stopwatch analysisWatch = Stopwatch.createStarted();
+                Result result = runAnalysis(config, results);
+                overall.stop();
+                analysisWatch.stop();
+                System.out.println(getName() + " has run for " + overall + ", " + analysisWatch);
+                return result;
             }
         });
 
