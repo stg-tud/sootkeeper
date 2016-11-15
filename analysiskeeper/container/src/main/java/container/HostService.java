@@ -61,6 +61,7 @@ class HostService {
 
     /**
      * Is bound to the OSGi Commandline
+     *
      * @see HostService#listAnalyses()
      */
     public void la() {
@@ -69,6 +70,7 @@ class HostService {
 
     /**
      * Is bound to the OSGi Commandline
+     *
      * @see HostService#runAnalysis(String...)
      */
     public void ra(String... params) {
@@ -77,17 +79,18 @@ class HostService {
 
     /**
      * Runs the given Analysis
-     *
+     * <p>
      * Is bound to the OSGi Commandline
+     *
      * @param params the first entry is the name of the analysis to run, the following entries are optional arguments to the analysis
      */
     public void runAnalysis(String... params) {
-        previous = params.clone();
-        findAnalyses();
         if (params.length < 1) {
             System.out.println("Please provide an analysis name.");
             return;
         }
+        previous = params.clone();
+        findAnalyses();
         String analysis = params[0];
         String classNameOfService = analyses.get(analysis);
         if (classNameOfService == null) {
@@ -121,14 +124,16 @@ class HostService {
     /**
      * Forces the OSGi framework to reload the given Analysis from its jar, this is done recursively for all dependent analyses
      * Is bound to the OSGi Commandline
+     *
      * @param name the analysis to reload
      */
     public void updateAnalysis(String name) {
         try {
             findAnalyses();
             String classNameOfService = analyses.get(name);
+            System.out.println("Updating " + name);
             if (classNameOfService == null) {
-                System.out.println("Could find: " + name);
+                System.out.println("Could not find: " + name);
                 return;
             }
             ServiceReference<IAnalysisService<IAnalysisResult, IAnalysisConfig>> serviceReference =
@@ -143,10 +148,21 @@ class HostService {
     }
 
     /**
-     *
      * @see HostService#updateAnalysis(String)
      */
     public void ua(String name) {
         updateAnalysis(name);
+    }
+
+    public void ua() {
+        updateAnalysis();
+    }
+
+    public void updateAnalysis() {
+        if (previous != null) {
+            updateAnalysis(previous[0]);
+        } else {
+            System.out.println("This only works when an analysis was run previously");
+        }
     }
 }
