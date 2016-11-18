@@ -22,8 +22,8 @@ before_install:
 
 install: true
 
-after_success:
-  - mvn clean deploy --settings settings.xml
+#after_success:
+#  - mvn clean deploy --settings settings.xml
 
 notifications:
   email:

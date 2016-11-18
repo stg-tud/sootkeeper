@@ -102,21 +102,7 @@
 				    <goals>deploy</goals>
 				  </configuration>
 				</plugin>
-			    <plugin>
-			      <groupId>org.apache.maven.plugins</groupId>
-			      <artifactId>maven-gpg-plugin</artifactId>
-			      <version>1.5</version>
-			      <executions>
-			        <execution>
-			          <id>sign-artifacts</id>
-			          <phase>verify</phase>
-			          <goals>
-			            <goal>sign</goal>
-			          </goals>
-			        </execution>
-			      </executions>
-			    </plugin>
-            </plugins>
+			</plugins>
         </pluginManagement>
     </build>
 
@@ -162,4 +148,33 @@
     	<connection>scm:git:git@github.com:stg-tud/sootkeeper.git</connection>
     	<developerConnection>scm:git:git@github.com:stg-tud/sootkeeper.git</developerConnection>
     </scm>
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>gpg.passphrase</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.5</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
