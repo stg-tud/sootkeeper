@@ -48,6 +48,8 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      */
     private List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> dependOnAnalyses;
 
+    private boolean checked = false;
+
 
     /**
      * Constructor of the AnalysisService. Also checks the concrete service class layout ({@link AbstractAnalysisService#checkService()}).
@@ -57,18 +59,18 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      * @throws IllegalStateException       if an AnalysisService required by the @DependsOn annotation is not registered in the context.
      * @see AbstractAnalysisService#checkService()
      */
-    protected AbstractAnalysisService(BundleContext context) throws IllegalClassFormatException, IllegalStateException {
+    protected AbstractAnalysisService(BundleContext context) {
         this.results = new ConcurrentHashMap<>();
         this.context = context;
         this.bundle = context.getBundle();
-        checkService();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public final Future<Result> performAnalysis(final Config config) {
+    public final Future<Result> performAnalysis(final Config config) throws IllegalClassFormatException {
+        checkService();
         final Stopwatch overall = Stopwatch.createStarted();
 
         if (results.containsKey(config)) {
@@ -81,7 +83,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
         Future<Result> result = POOL.submit(new Callable<Result>() {
 
             @Override
-            public Result call() throws InterruptedException, ExecutionException {
+            public Result call() throws InterruptedException, ExecutionException, IllegalClassFormatException {
 
                 Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, IAnalysisResult> results = new HashMap<>();
                 Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> futureResults = new HashMap<>();
@@ -183,7 +185,9 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      * @throws IllegalStateException       if an AnalysisService required by the @DependsOn annotation is not registered in the context.
      */
     private void checkService() throws IllegalClassFormatException, IllegalStateException {
-
+        if (checked) {
+            return;
+        }
         // Get annotation for required analyses
         DependsOn annotation = getClass().getAnnotation(DependsOn.class);
         if (annotation == null) {
@@ -197,6 +201,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
                 throw new IllegalStateException("Required AnalysisService " + analysis.getName() + " is not registered");
             }
         }
+        checked = true;
     }
 
     /**

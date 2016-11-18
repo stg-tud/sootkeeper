@@ -42,5 +42,4 @@
             <version>20.0</version>
         </dependency>
     </dependencies>
-    <groupId>de.tu-darmstadt.stg</groupId>
 </project>

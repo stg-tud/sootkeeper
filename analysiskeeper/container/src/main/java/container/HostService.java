@@ -7,6 +7,7 @@ import org.apache.felix.service.command.Descriptor;
 import org.osgi.framework.*;
 import org.osgi.framework.wiring.FrameworkWiring;
 
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.*;
 import java.util.concurrent.Future;
 
@@ -73,7 +74,7 @@ class HostService {
      *
      * @see HostService#runAnalysis(String...)
      */
-    public void ra(String... params) {
+    public void ra(String... params) throws IllegalClassFormatException {
         runAnalysis(params);
     }
 
@@ -84,7 +85,7 @@ class HostService {
      *
      * @param params the first entry is the name of the analysis to run, the following entries are optional arguments to the analysis
      */
-    public void runAnalysis(String... params) {
+    public void runAnalysis(String... params) throws IllegalClassFormatException {
         if (params.length < 1) {
             System.out.println("Please provide an analysis name.");
             return;
@@ -113,7 +114,7 @@ class HostService {
      * Repeats the previous Analysis with the same arguments, e.g. after reloading
      * Is bound to the OSGi Commandline
      */
-    public void rep() {
+    public void rep() throws IllegalClassFormatException {
         if (previous != null) {
             runAnalysis(previous);
         } else {

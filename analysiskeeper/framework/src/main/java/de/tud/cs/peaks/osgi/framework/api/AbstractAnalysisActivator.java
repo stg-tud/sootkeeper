@@ -6,6 +6,9 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
 import java.lang.instrument.IllegalClassFormatException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * An abstract {@link org.osgi.framework.BundleActivator} for the use of an {@link IAnalysisService}.
@@ -18,15 +21,11 @@ import java.lang.instrument.IllegalClassFormatException;
 public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, Config extends IAnalysisConfig>
         implements IAnalysisActivator<Result, Config> {
 
-    /**
-     * The context of this bundle.
-     */
-    private BundleContext context = null;
 
     /**
      * The registration of the AnalysisService that belongs to this Activator.
      */
-    private ServiceRegistration reg = null;
+    private List<ServiceRegistration> registrations = new LinkedList<>();
 
     /**
      * {@inheritDoc}
@@ -36,9 +35,8 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
      */
     @Override
     public void start(BundleContext context) throws IllegalClassFormatException, IllegalStateException {
-        this.context = context;
-        AbstractAnalysisService<Result, Config> analysisService = getAnalysisService(context);
-        reg = context.registerService(analysisService.getClass().getName(), analysisService, null);
+        List<AbstractAnalysisService<Result, Config>> analysisServices = getAnalysisServices(context);
+        registrations.addAll(analysisServices.stream().map(analysisService -> context.registerService(analysisService.getClass().getName(), analysisService, null)).collect(Collectors.toList()));
     }
 
 
@@ -49,8 +47,7 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
      */
     @Override
     public void stop(BundleContext context) throws IllegalClassFormatException {
-        this.context = context;
-        reg.unregister();
+        registrations.forEach(ServiceRegistration::unregister);
     }
 
 

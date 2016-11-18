@@ -5,6 +5,7 @@ import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.Bundle;
 
+import java.lang.instrument.IllegalClassFormatException;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -44,13 +45,13 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
      * @see de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn
      * @see AbstractAnalysisService
      */
-    Future<Result> performAnalysis(final Config config);
+    Future<Result> performAnalysis(final Config config) throws IllegalClassFormatException;
 
     /**
      * Converts the config of this analysis to a config of the given analysis this depends on.
      *
      * @param config       the config to convert
-     * @param serviceClass the required analysis type, for which the config needs to be converted to
+     * @param serviceClass the required analysis type, for which the config needs to be converted
      * @return the converted config
      */
     IAnalysisConfig convertConfig(Config config, Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass);

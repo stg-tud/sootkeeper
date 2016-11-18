@@ -8,6 +8,8 @@ import de.tud.cs.peaks.osgi.soot.api.SootService;
 import org.osgi.framework.BundleContext;
 
 import java.lang.instrument.IllegalClassFormatException;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Florian Kuebler
@@ -15,8 +17,8 @@ import java.lang.instrument.IllegalClassFormatException;
 public class Activator extends AbstractAnalysisActivator<SootBundleResult, SootBundleConfig> {
 
     @Override
-    public AbstractAnalysisService<SootBundleResult, SootBundleConfig> getAnalysisService(BundleContext bundleContext) throws IllegalStateException, IllegalClassFormatException {
-        return new SootService(bundleContext);
+    public List<AbstractAnalysisService<SootBundleResult, SootBundleConfig>> getAnalysisServices(BundleContext bundleContext) throws IllegalStateException, IllegalClassFormatException {
+        return Collections.singletonList(new SootService(bundleContext));
     }
 
 
