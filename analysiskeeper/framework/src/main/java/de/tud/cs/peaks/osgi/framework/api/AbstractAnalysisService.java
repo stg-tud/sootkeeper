@@ -8,6 +8,7 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import java.io.*;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.*;
 import java.util.concurrent.*;
@@ -75,47 +76,39 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
 
         if (results.containsKey(config)) {
             overall.stop();
-            System.out.println("Result cached: " + config + " (" + overall.toString() + ")");
+            logTime(overall);
+            System.out.println(getName() + " has run for " + overall.elapsed(TimeUnit.MILLISECONDS) + " ms. The result was cached.");
             return results.get(config);
         }
 
-        System.out.println("Analysis " + this +" Submitting task: " + config);
-        Future<Result> result = POOL.submit(new Callable<Result>() {
+        System.out.println("In " + getName() + " Submitting task: " + config);
+        Future<Result> result = POOL.submit(() -> {
 
-            @Override
-            public Result call() throws InterruptedException, ExecutionException, IllegalClassFormatException {
+            Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, IAnalysisResult> results1 = new HashMap<>();
+            Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> futureResults = new HashMap<>();
 
-                Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, IAnalysisResult> results = new HashMap<>();
-                Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> futureResults = new HashMap<>();
+            for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysisClass : dependOnAnalyses) {
+                IAnalysisService<IAnalysisResult, IAnalysisConfig> analysis = getServiceInstance(analysisClass);
 
-                for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysisClass : dependOnAnalyses) {
-                    IAnalysisService<IAnalysisResult, IAnalysisConfig> analysis = getServiceInstance(analysisClass);
+                IAnalysisConfig analysisConfig = convertConfig(config, analysisClass);
 
-                    IAnalysisConfig analysisConfig = convertConfig(config, analysisClass);
+                Future<IAnalysisResult> analysisResult = analysis.performAnalysis(analysisConfig);
 
-                    Future<IAnalysisResult> analysisResult = analysis.performAnalysis(analysisConfig);
-
-                    futureResults.put(analysisClass, analysisResult);
-                }
-
-                for (Map.Entry<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> entry : futureResults
-                        .entrySet()) {
-                    results.put(entry.getKey(), entry.getValue().get());
-                    ungetService(entry.getKey());
-                }
-                Stopwatch analysisWatch = Stopwatch.createStarted();
-                Result result = null;
-                try {
-                    result = runAnalysis(config, results);
-                } catch (RuntimeException re){
-                    re.printStackTrace();
-                    System.err.println(re.getMessage());
-                }
-                overall.stop();
-                analysisWatch.stop();
-                System.out.println(getName() + " has run for " + overall + ", " + analysisWatch);
-                return result;
+                futureResults.put(analysisClass, analysisResult);
             }
+
+            for (Map.Entry<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> entry : futureResults
+                    .entrySet()) {
+                results1.put(entry.getKey(), entry.getValue().get());
+                ungetService(entry.getKey());
+            }
+            Stopwatch analysisWatch = Stopwatch.createStarted();
+            Result result1 = runAnalysis(config, results1);
+            overall.stop();
+            analysisWatch.stop();
+            logTime(analysisWatch);
+            System.out.println(getName() + " has run for " + overall.elapsed(TimeUnit.MILLISECONDS) + " ms, " + analysisWatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
+            return result1;
         });
 
         results.put(config, result);
@@ -221,5 +214,16 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      */
     public List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses() {
         return dependOnAnalyses;
+    }
+
+    private void logTime(Stopwatch time) {
+        File f = new File("timings.txt");
+        try (FileWriter fw = new FileWriter(f, true);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println(getName() + "," + time.elapsed(TimeUnit.SECONDS));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
