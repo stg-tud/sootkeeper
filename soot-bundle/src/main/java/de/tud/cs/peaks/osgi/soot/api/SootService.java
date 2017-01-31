@@ -44,10 +44,8 @@ public class SootService extends AbstractAnalysisService<SootBundleResult, SootB
                                         Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>,
                                                 IAnalysisResult> previousResults) {
         synchronized (mutex) {
-            System.out.println("Prep. Soot!");
             SootRun sootRun = new SootRun(config.getFluentOptions(), config.getAnalysisTarget());
             SootResult res = sootRun.perform();
-            System.out.println(res.getCompleteOutput());
             return new SootBundleResult(res);
         }
 

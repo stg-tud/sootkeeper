@@ -143,6 +143,7 @@ class HostService {
             IAnalysisService<IAnalysisResult, IAnalysisConfig> service = context.getService(serviceReference);
             service.getBundle().update();
             context.getBundle(0L).adapt(FrameworkWiring.class).refreshBundles(Collections.singleton(service.getBundle()));
+            System.out.println("Updated " + name);
         } catch (BundleException e) {
             e.printStackTrace();
         }

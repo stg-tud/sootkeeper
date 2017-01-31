@@ -21,13 +21,13 @@ public abstract class AbstractSootAnalysis<Result extends IAnalysisResult, Confi
 
     @Override
     public Result runAnalysis(Config config,Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, IAnalysisResult> map) {
-        final SootResult soootResult = ((SootBundleResult) map.get(SootService.class)).getSootResult();
+        final SootResult sootResult = ((SootBundleResult) map.get(SootService.class)).getSootResult();
 
         //TODO
         G.setGlobalObjectGetter(new G.GlobalObjectGetter() {
             @Override
             public G getG() {
-                return soootResult.getSootGlobal();
+                return sootResult.getSootGlobal();
             }
 
             @Override
@@ -36,7 +36,7 @@ public abstract class AbstractSootAnalysis<Result extends IAnalysisResult, Confi
             }
         });
 
-        return runSootBasedAnalysis(config, map, soootResult);
+        return runSootBasedAnalysis(config, map, sootResult);
     }
 
 
