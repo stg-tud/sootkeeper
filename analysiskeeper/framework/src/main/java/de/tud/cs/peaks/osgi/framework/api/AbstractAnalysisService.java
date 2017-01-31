@@ -79,7 +79,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
             return results.get(config);
         }
 
-        System.out.println("Submitting task: " + config);
+        System.out.println("Analysis " + this +" Submitting task: " + config);
         Future<Result> result = POOL.submit(new Callable<Result>() {
 
             @Override
@@ -104,7 +104,13 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
                     ungetService(entry.getKey());
                 }
                 Stopwatch analysisWatch = Stopwatch.createStarted();
-                Result result = runAnalysis(config, results);
+                Result result = null;
+                try {
+                    result = runAnalysis(config, results);
+                } catch (RuntimeException re){
+                    re.printStackTrace();
+                    System.err.println(re.getMessage());
+                }
                 overall.stop();
                 analysisWatch.stop();
                 System.out.println(getName() + " has run for " + overall + ", " + analysisWatch);
@@ -123,6 +129,12 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     @Override
     public Bundle getBundle() {
         return bundle;
+    }
+
+
+    @Override
+    public boolean shouldBeHidden() {
+        return false;
     }
 
     /**

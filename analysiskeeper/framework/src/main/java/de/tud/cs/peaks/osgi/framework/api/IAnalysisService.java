@@ -70,4 +70,11 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
      * @return the corresponding OSGi Bundle
      */
     Bundle getBundle();
+
+    /**
+     * Method the framework uses to decide whether this service should be hidden from the user
+     *
+     * @return
+     */
+    boolean shouldBeHidden();
 }

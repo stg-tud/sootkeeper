@@ -7,6 +7,8 @@ import org.osgi.framework.ServiceRegistration;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
+import static org.knopflerfish.service.console.CommandGroup.GROUP_NAME;
+
 /**
  * This is the BundleActivator for the AnalysisKeeper Container
  * It registers the commandline commands and the service that handles them
@@ -31,6 +33,7 @@ public class HostActivator implements BundleActivator {
         Hashtable<String, Object> properties = new Hashtable<>();
         properties.put(OSGI_COMMAND_SCOPE, SCOPE);
         properties.put(OSGI_COMMAND_FUNCTION, COMMAND_FUNCTIONS);
+        properties.put(GROUP_NAME, HostService.SOOTKEEPER_NAME);
         return properties;
     }
 
