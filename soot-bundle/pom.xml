@@ -56,7 +56,6 @@
                             org.jf.util.*,
                             polyglot.*,
                             com.google.common.*,
-                            org.slf4j.*,
                             java_cup.runtime
                         </_exportcontents>
                         <Export-Package>

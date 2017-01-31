@@ -4,26 +4,38 @@ import de.tud.cs.peaks.osgi.framework.api.IAnalysisService;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.apache.felix.service.command.Descriptor;
+import org.knopflerfish.service.console.CommandGroupAdapter;
+import org.knopflerfish.service.console.Session;
 import org.osgi.framework.*;
 import org.osgi.framework.wiring.FrameworkWiring;
 
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.*;
 import java.util.concurrent.Future;
 
 
-class HostService {
+class HostService extends CommandGroupAdapter {
+
+    public final static String USAGE_SOOTKEEPER = "";
+    public final static String[] HELP_SOOTKEEPER = new String[]{""};
+    public static final String SOOTKEEPER_NAME = "sootkeeper";
+
 
     private final BundleContext context;
     /**
      * This table maps the different Analysis names to their service representation
      */
     private final Map<String, String> analyses;
+    private final Map<String, String> hiddenAnalyses;
     private String[] previous;
 
     HostService(BundleContext context) {
+        super(SOOTKEEPER_NAME, "");
         this.context = context;
         analyses = new HashMap<>();
+        hiddenAnalyses = new HashMap<>();
     }
 
     /**
@@ -51,12 +63,16 @@ class HostService {
                 if (service instanceof IAnalysisService) {
                     String shortName = ((IAnalysisService<?, ?>) service).getName();
                     String className = service.getClass().getName();
-                    analyses.put(shortName, className);
+                    if (!((IAnalysisService) service).shouldBeHidden()) {
+                        analyses.put(shortName, className);
+                    } else {
+                        hiddenAnalyses.put(shortName,className);
+                    }
                 }
                 context.ungetService(serviceReference);
             }
         } catch (InvalidSyntaxException ignored) {
-            // should not happen since null is no invalid syntax
+            // should not happen since null cannot be invalid syntax
         }
     }
 
@@ -85,6 +101,7 @@ class HostService {
      *
      * @param params the first entry is the name of the analysis to run, the following entries are optional arguments to the analysis
      */
+    @Descriptor("Runs an analysis")
     public void runAnalysis(String... params) throws IllegalClassFormatException {
         if (params.length < 1) {
             System.out.println("Please provide an analysis name.");
@@ -94,6 +111,9 @@ class HostService {
         findAnalyses();
         String analysis = params[0];
         String classNameOfService = analyses.get(analysis);
+        if (classNameOfService == null) {
+            classNameOfService = hiddenAnalyses.get(analysis);
+        }
         if (classNameOfService == null) {
             System.out.println("Could not run: " + analysis);
             return;
@@ -131,8 +151,11 @@ class HostService {
     public void updateAnalysis(String name) {
         try {
             findAnalyses();
-            String classNameOfService = analyses.get(name);
             System.out.println("Updating " + name);
+            String classNameOfService = analyses.get(name);
+            if (classNameOfService == null) {
+                classNameOfService = hiddenAnalyses.get(name);
+            }
             if (classNameOfService == null) {
                 System.out.println("Could not find: " + name);
                 return;
@@ -164,7 +187,11 @@ class HostService {
         if (previous != null) {
             updateAnalysis(previous[0]);
         } else {
-            System.out.println("This only works when an analysis was run previously");
+            System.out.println("This only works when an analysis was run previously, please provide a name");
         }
+    }
+
+    public int cmdSOOTKEEPER(Dictionary opts, Reader in, PrintWriter Out, Session session) {
+        return 0;
     }
 }
