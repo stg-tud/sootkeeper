@@ -55,7 +55,6 @@
                             org.jf.dexlib2.*,
                             org.jf.util.*,
                             polyglot.*,
-                            org.slf4j.*,
                             com.google.common.*,
                             java_cup.runtime
                         </_exportcontents>
