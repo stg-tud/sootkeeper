@@ -37,6 +37,7 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
     public void start(BundleContext context) throws IllegalClassFormatException, IllegalStateException {
         List<AbstractAnalysisService<Result, Config>> analysisServices = getAnalysisServices(context);
         registrations.addAll(analysisServices.stream().map(analysisService -> context.registerService(analysisService.getClass().getName(), analysisService, null)).collect(Collectors.toList()));
+        System.out.println("Started " + analysisServices.get(0).getName());
     }
 
 
