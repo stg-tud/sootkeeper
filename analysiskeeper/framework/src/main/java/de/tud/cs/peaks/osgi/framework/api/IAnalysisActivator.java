@@ -25,6 +25,6 @@ public interface IAnalysisActivator<Result extends IAnalysisResult, Config exten
      * @throws IllegalStateException       if an AnalysisService required by the {@link de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn} annotation is not registered in the context.
      * @see de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn
      */
-    List<AbstractAnalysisService<Result, Config>> getAnalysisServices(BundleContext bundleContext) throws IllegalStateException, IllegalClassFormatException;
+    AbstractAnalysisService<Result, Config> getAnalysisService(BundleContext bundleContext) throws IllegalStateException, IllegalClassFormatException;
 
 }

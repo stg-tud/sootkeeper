@@ -9,7 +9,6 @@ import org.osgi.framework.BundleContext;
 
 import java.lang.instrument.IllegalClassFormatException;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @author Florian Kuebler
@@ -17,8 +16,8 @@ import java.util.List;
 public class Activator extends AbstractAnalysisActivator<SootBundleResult, SootBundleConfig> {
 
     @Override
-    public List<AbstractAnalysisService<SootBundleResult, SootBundleConfig>> getAnalysisServices(BundleContext bundleContext) throws IllegalStateException, IllegalClassFormatException {
-        return Collections.singletonList(new SootService(bundleContext));
+    public AbstractAnalysisService<SootBundleResult, SootBundleConfig> getAnalysisService(BundleContext bundleContext) throws IllegalStateException, IllegalClassFormatException {
+        return new SootService(bundleContext);
     }
 
 

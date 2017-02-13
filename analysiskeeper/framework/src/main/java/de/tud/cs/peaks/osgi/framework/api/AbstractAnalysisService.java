@@ -44,21 +44,14 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      */
     private final Bundle bundle;
 
-    /**
-     * The list of all AnalysisServices this service depends on.
-     */
-    private List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> dependOnAnalyses;
-
     private boolean checked = false;
 
-
     /**
-     * Constructor of the AnalysisService. Also checks the concrete service class layout ({@link AbstractAnalysisService#checkService()}).
+     * Constructor of the AnalysisService.
      *
      * @param context the context of the bundle this service belongs to.
      * @throws IllegalClassFormatException when the concrete service does not have a @DependsOn annotation.
      * @throws IllegalStateException       if an AnalysisService required by the @DependsOn annotation is not registered in the context.
-     * @see AbstractAnalysisService#checkService()
      */
     protected AbstractAnalysisService(BundleContext context) {
         this.results = new ConcurrentHashMap<>();
@@ -87,7 +80,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
             Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, IAnalysisResult> results1 = new HashMap<>();
             Map<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>, Future<IAnalysisResult>> futureResults = new HashMap<>();
 
-            for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysisClass : dependOnAnalyses) {
+            for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysisClass : getDependOnAnalyses()) {
                 IAnalysisService<IAnalysisResult, IAnalysisConfig> analysis = getServiceInstance(analysisClass);
 
                 IAnalysisConfig analysisConfig = convertConfig(config, analysisClass);
@@ -143,7 +136,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      * @throws IllegalArgumentException if no service is registered under the given class or the service is no {@link AbstractAnalysisService}.
      */
     @SuppressWarnings("unchecked")
-    protected synchronized <R extends IAnalysisResult, C extends IAnalysisConfig> AbstractAnalysisService<R, C> getServiceInstance(
+    private synchronized <R extends IAnalysisResult, C extends IAnalysisConfig> AbstractAnalysisService<R, C> getServiceInstance(
             Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> serviceClass) throws IllegalArgumentException {
         if (context != null) {
             ServiceReference ref = context.getServiceReference(serviceClass.getName());
@@ -193,14 +186,8 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
         if (checked) {
             return;
         }
-        // Get annotation for required analyses
-        DependsOn annotation = getClass().getAnnotation(DependsOn.class);
-        if (annotation == null) {
-            throw new IllegalClassFormatException(getClass().getName() + " has no @DependsOn annotation");
-        }
-        dependOnAnalyses = Collections.unmodifiableList(Arrays.asList(annotation.value()));
         // check whether all required analyses are available
-        for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysis : dependOnAnalyses) {
+        for (Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>> analysis : getDependOnAnalyses()) {
             ServiceReference ref = context.getServiceReference(analysis.getName());
             if (ref == null) {
                 throw new IllegalStateException("Required AnalysisService " + analysis.getName() + " is not registered");
@@ -212,9 +199,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     /**
      * @return the list of all AnalysisServices this service depends on.
      */
-    public List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses() {
-        return dependOnAnalyses;
-    }
+    protected abstract List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses();
 
     private void logTime(Stopwatch time) {
         File f = new File("timings.txt");
