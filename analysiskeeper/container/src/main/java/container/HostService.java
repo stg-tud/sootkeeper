@@ -22,7 +22,6 @@ class HostService extends CommandGroupAdapter {
     public final static String[] HELP_SOOTKEEPER = new String[]{""};
     public static final String SOOTKEEPER_NAME = "sootkeeper";
 
-
     private final BundleContext context;
     /**
      * This table maps the different Analysis names to their service representation
@@ -66,7 +65,7 @@ class HostService extends CommandGroupAdapter {
                     if (!((IAnalysisService) service).shouldBeHidden()) {
                         analyses.put(shortName, className);
                     } else {
-                        hiddenAnalyses.put(shortName,className);
+                        hiddenAnalyses.put(shortName, className);
                     }
                 }
                 context.ungetService(serviceReference);
@@ -165,9 +164,9 @@ class HostService extends CommandGroupAdapter {
                             context.getServiceReference(classNameOfService);
             IAnalysisService<IAnalysisResult, IAnalysisConfig> service = context.getService(serviceReference);
             service.getBundle().update();
-            context.getBundle(0L).adapt(FrameworkWiring.class).refreshBundles(Collections.singleton(service.getBundle()));
-            System.out.println("Updated " + name);
-        } catch (BundleException e) {
+            context.getBundle(0L).adapt(FrameworkWiring.class)
+                    .refreshBundles(Collections.singleton(service.getBundle()), new UpdateListener(name));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -193,5 +192,18 @@ class HostService extends CommandGroupAdapter {
 
     public int cmdSOOTKEEPER(Dictionary opts, Reader in, PrintWriter Out, Session session) {
         return 0;
+    }
+
+    private class UpdateListener implements FrameworkListener {
+        private final String analysis;
+
+        private UpdateListener(String analysis) {
+            this.analysis = analysis;
+        }
+
+        @Override
+        public void frameworkEvent(FrameworkEvent event) {
+            System.out.println("Updated " + analysis);
+        }
     }
 }

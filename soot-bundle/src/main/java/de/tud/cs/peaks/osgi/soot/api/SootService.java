@@ -12,15 +12,21 @@ import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import java.lang.instrument.IllegalClassFormatException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
-@DependsOn({})
 public class SootService extends AbstractAnalysisService<SootBundleResult, SootBundleConfig> {
     private static final String NAME = "soot";
     private static final Object mutex = new Object();
 
     public SootService(BundleContext context) throws IllegalClassFormatException {
         super(context);
+    }
+
+    @Override
+    protected List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses() {
+        return Collections.emptyList();
     }
 
     @Override
