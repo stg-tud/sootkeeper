@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.tu-darmstadt.stg</groupId>
         <artifactId>sootkeeper</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0</version>
     </parent>
     <artifactId>hello-world</artifactId>
     <packaging>bundle</packaging>
@@ -33,7 +33,7 @@
     	<dependency>
     		<groupId>de.tu-darmstadt.stg</groupId>
     		<artifactId>framework</artifactId>
-    		<version>1.0-SNAPSHOT</version>
+    		<version>1.0</version>
     		<type>bundle</type>
     	</dependency>
     </dependencies>
