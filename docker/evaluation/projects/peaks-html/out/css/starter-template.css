@@ -1,0 +1,12 @@
+body {
+	padding-top: 50px;
+	min-height: 2000px;
+}
+.starter-template {
+	padding: 40px 15px;
+	text-align: center;
+}
+.limited-height{
+	height: 300px; 
+	overflow-y: auto;
+}
