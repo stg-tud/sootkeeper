@@ -1,0 +1,390 @@
+#set( $directNativeResult = $result.getDirectNativeUsageResult() )
+#set( $transitiveNativeResult = $result.getTransitveNativeUsageResult() )
+#set( $reflectionResult = $result.getReflectionUsageResult() )
+#set( $staticResult = $result.getStaticUsageResult() )
+
+
+#macro( methodTable $methods )
+<table class="table table-hover table-bordered text-left">
+    <thead>
+        <tr>
+            <td><strong>Method</strong></td>
+            <td><strong>Rating</strong></td>
+        </tr>
+    </thead>
+    <tbody>
+		#foreach( $method in $resultHelper.sort($methods) )
+			#if( $method.getRating() >= 0.1) 
+				#if( $method.getRating() < 0.3)
+					#set( $type = "success")
+				#elseif( $method.getRating() < 0.6)
+					#set( $type = "warning")
+				#else
+					#set( $type = "danger")
+				#end
+				<tr class=$type>
+					<td>$method.getVisibility().toString() $method.getQualifiedName()</td>
+					<td>$math.roundTo(2, $method.getRating())</td>
+				</tr>
+			#end
+		#end
+    </tbody>
+</table>
+#end
+
+#macro( pathTable $paths )
+	#foreach( $path in $paths )
+		<table class="table table-hover table-bordered text-left">
+		    <thead>
+		        <tr>
+		            <td><strong>Method</strong></td>
+		            <td><strong>Line Number</strong></td>
+		        </tr>
+		    </thead>
+		    <tbody>
+		    	#foreach( $pathNode in $path.getNodes() )
+					<tr class="danger">
+						<td>$pathNode.getMethod().getQualifiedName()</td>
+						<td>$pathNode.getLineNumber()</td>
+					</tr>
+				#end
+		    </tbody>
+		</table>
+	#end
+#end
+
+#macro( fieldTable $fields )
+<table class="table table-hover table-bordered text-left">
+    <thead>
+        <tr>
+            <td><strong>Field</strong></td>
+            <td><strong>Rating</strong></td>
+        </tr>
+    </thead>
+    <tbody>
+		#foreach( $field in  $resultHelper.sort($fields) )
+			#if( $field.getRating() >= 0.1)
+				#if( $field.getRating() < 0.3)
+					#set( $type = "success")
+				#elseif( $field.getRating() < 0.6)
+					#set( $type = "warning")
+				#else
+					#set( $type = "danger")
+				#end
+				<tr class=$type>
+					<td>$field.getVisibility().toString() $field.getQualifiedName()</td>
+					<td>$field.getRating()</td>
+				</tr>
+			#end
+		#end
+    </tbody>
+</table>
+#end
+
+<!DOCTYPE html>
+
+<html lang="en">
+	<head>
+	    <meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <meta name="description" content="">
+	    <meta name="author" content="">
+	    <link rel="shortcut icon" href="icon/favicon.png">
+	
+	    <title>PEAKS Analysis Result</title><!-- Bootstrap core CSS -->
+	    <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
+	    <link href="css/bootstrap-theme.css" rel="stylesheet" type="text/css"><!-- Custom styles for this template -->
+	    <link href="css/starter-template.css" rel="stylesheet" type="text/css"><!-- Just for debugging purposes. Don't actually copy this line! -->
+	    <!--[if lt IE 9]><script src="../../docs-assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+	    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	    <!--[if lt IE 9]>
+	          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	          <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+	        <![endif]-->
+	</head>
+	
+	<body data-spy="scroll" data-target="#nav">
+	    <div id="nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+	        <div class="container">
+	            <div class="navbar-header">
+	                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+	               		<span class="sr-only">Toggle navigation</span>
+	                </button>
+	                <a class="navbar-brand" href="#">PEAKS Analysis Result</a>
+	            </div>
+	
+	            <div class="collapse navbar-collapse">
+	                <ul class="nav navbar-nav">
+	                    <li class="active"><a href="#overall">Overall</a></li>
+	              		
+	              		#if( $directNativeResult && $transitiveNativeResult) 
+	                    <li class="dropdown">
+	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Native Usage</a>
+	                        <ul class="dropdown-menu">
+	                            <li><a href="#directnative">Direct Native Usage</a></li>
+	                            <li><a href="#transitivenative">Transitive Native Usage</a></li>
+	                        </ul>
+	                    </li>
+						#elseif( $directNativeResult)
+						<li><a href="#directnative">Direct Native Usage</a></li>
+						#elseif( $transitiveNativeResult)
+						<li><a href="#transitivenative">Transitive Native Usage</a></li>
+						#end
+						
+						#if ( $reflectionResult)
+	                    <li><a href="#reflection">Reflection Usage</a></li>
+						#end
+						
+						#if ( $staticResult)
+	                    <li><a href="#static">Static Usage</a></li>
+	                    #end
+	                </ul>
+	            </div><!--/.nav-collapse -->
+	        </div>
+	    </div>
+	
+	    <div class="container">
+	        <div id="overall" class="starter-template">
+	            <h1><img src="PEAKS-Logo.png" /><br/>Analysis Result</h1>
+	
+	            <p class="lead">Analysis Result for $result.getJarName().</p>
+				
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Duration</th>
+							<th>Machine</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>$result.getDate()</td>
+							<td>$result.getAnalysisDuration() ms</td>
+							<td>$result.getAnalysisMachine()</td>
+						</tr>
+					</tbody>
+				</table>
+				
+	            <div id="charts" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+	
+	            <table id="datatable" style="display:none">
+	                <thead>
+	                    <tr>
+	                        <th></th>
+	                        <th>Evil</th>
+	                        <th>Good</th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                
+	                	#if ( $staticResult)
+	                    <tr> 
+	                        <th>Static Usage</th>
+	                        <td>$resultHelper.countHostsRatingGreaterOrEqual($staticResult.getAllHosts(), 0.6)</td>
+	                        <td>$resultHelper.countHostsRatingSmaller($staticResult.getAllHosts(), 0.6)</td>
+	                    </tr>
+	                    #end
+	                    
+	                    #if ( $directNativeResult)
+	                    <tr>
+	                        <th>Direct Native Usage</th>
+	                        <td>$resultHelper.countHostsRatingGreaterOrEqual($directNativeResult.getAllHosts(), 0.6)</td>
+	                        <td>$resultHelper.countHostsRatingSmaller($directNativeResult.getAllHosts(), 0.6)</td>
+	                    </tr>
+	                    #end
+	                    
+	                    #if ( $transitiveNativeResult)
+	                    <tr>
+	                        <th>Transitive Native Usage</th>
+	                        <td>$resultHelper.countHostsRatingGreaterOrEqual($transitiveNativeResult.getAllHosts(), 0.6)</td>
+	                        <td>$resultHelper.countHostsRatingSmaller($transitiveNativeResult.getAllHosts(), 0.6)</td>
+	                    </tr>
+	                    #end
+	                    
+	                    #if ( $reflectionResult)
+	                    <tr>
+	                        <th>Reflection Usage</th>
+	                        <td>$resultHelper.countHostsRatingGreaterOrEqual($reflectionResult.getAllHosts(), 0.6)</td>
+	                        <td>$resultHelper.countHostsRatingSmaller($reflectionResult.getAllHosts(), 0.6)</td>
+	                    </tr>
+	                    #end
+	                    
+	                </tbody>
+	            </table>
+	        </div>
+	    </div><!-- /.container -->
+	
+	    <div class="container">
+	        <div id="native">
+	        	#if ( $directNativeResult)
+	            <div id="directnative" class="starter-template">
+	                <h1>Direct Native Usage</h1>
+	                <p class="lead">Analysis version $directNativeResult.getAnalysisVersion()</p>	  
+	                <p class="info">When using Java you might not be aware that most of the calls 
+	                you make sooner or later end up executing code that is directly compiled 
+	                from C/C++ to native code residing either in the Java Class Library or the 
+	                software library you are currently using. 
+	                This code is executed outside the security context of the Java Virtual Machine 
+	                and can access and alter the VM memory directly. 
+	                Thus, one of the major requirements of the OCaps model - the unforgeability 
+	                of references - can not be guaranteed any more.</p>               
+	                #methodTable( $directNativeResult.getAllMethods() )
+	            </div>
+				#end
+				
+				#if( $transitiveNativeResult)
+	            <div id="transitivenative" class="starter-template">
+	                <h1>Transitive Native Usage</h1>
+	                <p class="lead">Analysis version $transitiveNativeResult.getAnalysisVersion()</p>
+	                <p class="info">When using Java you might not be aware that most of the calls 
+	                you make sooner or later end up executing code that is directly compiled 
+	                from C/C++ to native code residing either in the Java Class Library or the 
+	                software library you are currently using. 
+	                This code is executed outside the security context of the Java Virtual Machine 
+	                and can access and alter the VM memory directly. 
+	                Thus, one of the major requirements of the OCaps model - the unforgeability 
+	                of references - can not be guaranteed any more.</p> 	                
+	                #methodTable( $transitiveNativeResult.getAllMethods() )
+	            </div>
+	            #end
+	        </div>
+	    </div><!-- /.container -->
+		
+		#if( $reflectionResult)
+	    <div class="container">
+	        <div id="reflection" class="starter-template">
+	            <h1>Reflection Usage</h1>
+	            <p class="lead">Analysis version $reflectionResult.getAnalysisVersion()</p>
+	            <p class="info">The most prominent and excessively used security feature of an object-oriented system is information hiding. 
+	            If you break information hiding the inner state of an object can be read or altered. 
+	            Subjects possessing a  capability can use intrusive reflection to break information hiding and effectively gain all transitively accessible capabilities.</p>
+	            #pathTable( $reflectionResult.getPaths() )
+	        </div>
+	    </div><!-- /.container -->
+		#end
+		
+		#if( $staticResult)
+	    <div class="container">
+	        <div id="static" class="starter-template">
+	            <h1>Static Usage</h1>
+	
+	            <p class="lead">Analysis version $staticResult.getAnalysisVersion()</p>
+				<p class="info">Through static calls you can construct a so called ambient resource. 
+	                Capabilities can be shared between subjects that otherwise wouldn't have access to it. 
+	                You lose the ability to control the explicit dispensation of capabilities.
+					However, not every static call is harmful here. In certain circumstances functionally pure methods might be allowed.</p>   
+	            <!--<div class="bs-example bs-example-type">
+	                <div class="progress">
+	                    <div class="progress-bar progress-bar-success" style="width: 30%">
+	                        <span class="sr-only">30% Complete (success)</span>
+	                    </div>
+	
+	                    <div class="progress-bar progress-bar-warning" style="width: 50%">
+	                        <span class="sr-only">50% Complete (warning)</span>
+	                    </div>
+	
+	                    <div class="progress-bar progress-bar-danger" style="width: 20%">
+	                        <span class="sr-only">20% Complete (danger)</span>
+	                    </div>
+	                </div>
+	            </div>-->
+	
+	            <h3>Static Methods</h3>
+	
+	            <div class="panel-group" id="accordion">
+	                <div class="panel panel-default">
+	                    <div class="panel-heading">
+	                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Static Methods</a></h4>
+	                    </div>
+	
+	                    <div id="collapseOne" class="panel-collapse collapse in">
+	                        <div class="panel-body">
+	                        	#methodTable( $staticResult.getAllMethods() )
+	                        </div>
+	                    </div>
+	                </div>	
+
+	                <div class="panel panel-default">
+	                    <div class="panel-heading">
+	                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Side effect free methods</a></h4>
+	                    </div>
+	                    <div id="collapseTwo" class="panel-collapse collapse">
+	                        <div class="panel-body">
+	                        	#methodTable( $staticResult.getSideEffectFreeMethods() )
+	                        </div>
+	                    </div>
+	                </div>
+	        	</div>
+				
+				<h3>Static Fields</h3>
+	
+	            <div class="panel-group" id="accordion">
+	                <div class="panel panel-default">
+	                    <div class="panel-heading">
+	                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#fieldsOne">Static Fields</a></h4>
+	                    </div>
+	
+	                    <div id="fieldsOne" class="panel-collapse collapse in">
+	                        <div class="panel-body">
+	                        	#fieldTable ( $staticResult.getAllFields() )
+	                        </div>
+	                    </div>
+	                </div>
+	
+	                <div class="panel panel-default">
+	                    <div class="panel-heading">
+	                        <h4 class="panel-title"><a data-toggle="collapse" data-parent="#accordion" href="#fieldsTwo">Immutable Fields</a></h4>
+	                    </div>
+	                    <div id="fieldsTwo" class="panel-collapse collapse">
+	                        <div class="panel-body">
+	                        	#fieldTable ( $staticResult.getImmutableFieldsFound() )
+	                        </div>
+	                    </div>
+	                </div>
+	        	</div>
+	        </div>
+	    </div><!-- /.container -->
+	    #end
+	    
+	    <!-- Bootstrap core JavaScript
+	        ================================================== -->
+	    <!-- Placed at the end of the document so the pages load faster -->
+	    <script src="https://code.jquery.com/jquery-1.10.2.min.js" type="text/javascript"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="http://code.highcharts.com/highcharts.js" type="text/javascript"></script>
+		<script src="http://code.highcharts.com/modules/data.js" type="text/javascript"></script>
+		<script src="http://code.highcharts.com/modules/exporting.js" type="text/javascript"></script>
+		<script type="text/javascript">
+		    $(function () {
+		    	Highcharts.setOptions({
+     				colors: ['#FF0000', '#AADD00']
+   				});
+		            $('#charts').highcharts({
+		                data: {
+		                    table: document.getElementById('datatable')
+		                },
+		                chart: {
+		                    type: 'column'
+		                },
+		                title: {
+		                    text: 'Overall Result'
+		                },
+		                yAxis: {
+		                    allowDecimals: false,
+		                    title: {
+		                        text: 'Methods'
+		                    }
+		                },
+		                tooltip: {
+		                    formatter: function() {
+		                        return '<b>'+ this.series.name +'<\/b><br/>'+
+		                            this.y +' '+ this.x.toLowerCase();
+		                    }
+		                }
+		            });
+		        });
+	    </script>
+	</body>
+</html>

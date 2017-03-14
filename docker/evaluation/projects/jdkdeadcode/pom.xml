@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.tu-darmstadt.stg</groupId>
+    <artifactId>jdk-dead-code-sootkeeper</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>bundle</packaging>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.felix</groupId>
+                <artifactId>maven-bundle-plugin</artifactId>
+                <version>2.5.3</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <instructions>
+                        <Export-Package>de.tudarmstadt.stg.sootkeeper.study.deadcode.analysis.api</Export-Package>
+                        <Private-Package>de.tudarmstadt.stg.sootkeeper.study.deadcode.analysis.*</Private-Package>
+                        <Bundle-Activator>de.tudarmstadt.stg.sootkeeper.study.deadcode.analysis.Activator
+                        </Bundle-Activator>
+                        <Import-Package>
+                            de.tud.cs.peaks.osgi.framework.api.*,
+                            de.tud.cs.peaks.osgi.soot.api.*,
+                            de.tud.cs.peaks.sootconfig.*,
+                            soot.*,
+                            org.osgi.framework
+                        </Import-Package>
+                        <Embed-Transitive>true</Embed-Transitive>
+                    </instructions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.osgi</groupId>
+            <artifactId>org.osgi.core</artifactId>
+            <version>6.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>de.tu-darmstadt.stg</groupId>
+            <artifactId>framework</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>de.tu-darmstadt.stg</groupId>
+            <artifactId>soot-bundle</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <repositories>
+        <repository>
+            <id>snapshots-repo</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+</project>
