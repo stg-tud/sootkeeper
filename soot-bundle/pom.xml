@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.tu-darmstadt.stg</groupId>
         <artifactId>sootkeeper</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
     <artifactId>soot-bundle</artifactId>
     <packaging>bundle</packaging>
@@ -12,20 +12,33 @@
         <dependency>
             <groupId>ca.mcgill.sable</groupId>
             <artifactId>soot</artifactId>
-            <version>trunk</version>
+            <version>3.0.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>de.tu-darmstadt.stg</groupId>
             <artifactId>sootconfig</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.1</version>
         </dependency>
         <dependency>
         	<groupId>de.tu-darmstadt.stg</groupId>
         	<artifactId>framework</artifactId>
-        	<version>1.0-SNAPSHOT</version>
+        	<version>1.1-SNAPSHOT</version>
         	<type>bundle</type>
         </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.5</version>
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
+    <repositories>
+        <repository>
+            <id>soot-snapshot</id>
+            <name>soot snapshots</name>
+            <url>http://soot-build.cs.uni-paderborn.de/nexus/repository/soot-snapshot/</url>
+        </repository>
+    </repositories>
     <properties>
         <main.basedir>{$basedir}/../../</main.basedir>
     </properties>
@@ -56,16 +69,23 @@
                             org.jf.util.*,
                             polyglot.*,
                             com.google.common.*,
-                            java_cup.runtime
+                            java_cup.runtime,
+                            com.beust.jcommander.*,
                         </_exportcontents>
                         <Export-Package>
                             de.tud.cs.peaks.osgi.soot.api,
                         </Export-Package>
                         <Private-Package>de.tud.cs.peaks.osgi.soot.*</Private-Package>
                         <Bundle-Activator>de.tud.cs.peaks.osgi.soot.Activator</Bundle-Activator>
-                        <Import-Package>de.tud.cs.peaks.osgi.framework.api.*</Import-Package>
-                        <Embed-Dependency>artifactId=soot|sootconfig</Embed-Dependency>
+                        <Import-Package>
+                            org.osgi.framework,
+                            de.tud.cs.peaks.osgi.framework.api,
+                            de.tud.cs.peaks.osgi.framework.api.data,
+                            org.slf4j,
+                            javax.annotation
+                        </Import-Package>
                         <Embed-Transitive>true</Embed-Transitive>
+                        <Embed-Dependency>scope=compile</Embed-Dependency>
                     </instructions>
                 </configuration>
             </plugin>

@@ -1,7 +1,6 @@
 package de.tud.cs.peaks.osgi.hello.api;
 
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
-import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.BundleContext;

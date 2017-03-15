@@ -1,7 +1,6 @@
 package de.tud.cs.peaks.osgi.framework.api;
 
 import com.google.common.base.Stopwatch;
-import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.Bundle;
@@ -14,7 +13,7 @@ import java.util.*;
 import java.util.concurrent.*;
 
 /**
- * An abstract class for AnalysisServices. Concrete implementations MUST declare an {@link DependsOn} annotation indicating on which analyses the service depends on.
+ * An abstract class for AnalysisServices.
  * This class provides automatic methods to run depending analyses and to cache the results.
  *
  * @param <Result> The type of the {@link IAnalysisResult} this AnalysisService produces.

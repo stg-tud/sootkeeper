@@ -4,7 +4,7 @@
     <parent>
         <groupId>de.tu-darmstadt.stg</groupId>
         <artifactId>analysiskeeper</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
     <artifactId>framework</artifactId>
     <packaging>bundle</packaging>

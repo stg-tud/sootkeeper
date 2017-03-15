@@ -1,14 +1,12 @@
 package de.tud.cs.peaks.osgi.soot.api;
 
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
-import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import de.tud.cs.peaks.sootconfig.AnalysisTarget;
 import de.tud.cs.peaks.sootconfig.FluentOptions;
 import de.tud.cs.peaks.sootconfig.SootResult;
 import de.tud.cs.peaks.sootconfig.SootRun;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import java.lang.instrument.IllegalClassFormatException;
