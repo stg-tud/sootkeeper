@@ -9,7 +9,7 @@
         <artifactId>sootkeeper</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>analysiskeeper</artifactId>
+    <artifactId>sootkeeper-analysiskeeper</artifactId>
     <packaging>pom</packaging>
     <name>Analysis Keeper</name>
 

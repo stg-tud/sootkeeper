@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>de.tu-darmstadt.stg</groupId>
-        <artifactId>analysiskeeper</artifactId>
+        <artifactId>sootkeeper-analysiskeeper</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>container</artifactId>
+    <artifactId>sootkeeper-container</artifactId>
     <packaging>bundle</packaging>
     <properties>
         <main.basedir>{$basedir}/../../../</main.basedir>
@@ -46,7 +46,7 @@
         </dependency>
         <dependency>
         	<groupId>de.tu-darmstadt.stg</groupId>
-        	<artifactId>framework</artifactId>
+        	<artifactId>sootkeeper-framework</artifactId>
         	<version>1.0</version>
         	<type>bundle</type>
         </dependency>

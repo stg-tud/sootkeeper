@@ -6,7 +6,7 @@
         <artifactId>sootkeeper</artifactId>
         <version>1.0</version>
     </parent>
-    <artifactId>hello-world</artifactId>
+    <artifactId>sootkeeper-hello-world</artifactId>
     <packaging>bundle</packaging>
     <build>
         <plugins>
@@ -32,7 +32,7 @@
     <dependencies>
     	<dependency>
     		<groupId>de.tu-darmstadt.stg</groupId>
-    		<artifactId>framework</artifactId>
+    		<artifactId>sootkeeper-framework</artifactId>
     		<version>1.0</version>
     		<type>bundle</type>
     	</dependency>
