@@ -21,8 +21,8 @@
         </dependency>
         <dependency>
             <groupId>de.tu-darmstadt.stg</groupId>
-            <artifactId>framework</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>sootkeeper-framework</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>org.osgi</groupId>
@@ -31,8 +31,8 @@
         </dependency>
         <dependency>
             <groupId>de.tu-darmstadt.stg</groupId>
-            <artifactId>soot-bundle</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>sootkeeper-soot-bundle</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
     <build>

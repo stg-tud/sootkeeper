@@ -4,7 +4,6 @@ import de.tu_darmstadt.stg.sootkeeper.flowdroid.base.FlowDroidBaseAnalysis;
 import de.tu_darmstadt.stg.sootkeeper.flowdroid.base.FlowDroidConfig;
 import de.tu_darmstadt.stg.sootkeeper.flowdroid.base.IntermediateResult;
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
-import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.BundleContext;

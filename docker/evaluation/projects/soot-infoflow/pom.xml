@@ -10,6 +10,11 @@
             <id>repo</id>
             <url>file://${basedir}/repo</url>
         </repository>
+        <repository>
+            <id>soot-snapshot</id>
+            <name>soot snapshots</name>
+            <url>http://soot-build.cs.uni-paderborn.de/nexus/repository/soot-snapshot/</url>
+        </repository>
     </repositories>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

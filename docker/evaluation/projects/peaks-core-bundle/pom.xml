@@ -10,8 +10,8 @@
     <dependencies>
         <dependency>
             <groupId>de.tu-darmstadt.stg</groupId>
-            <artifactId>soot-bundle</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <artifactId>sootkeeper-soot-bundle</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>de.tud.cs.peaks</groupId>

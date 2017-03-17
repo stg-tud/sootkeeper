@@ -1,7 +1,6 @@
 package de.tudarmstadt.stg.sootkeeper.study.deadcode.analysis.api;
 
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
-import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import de.tud.cs.peaks.osgi.soot.api.AbstractSootAnalysis;
@@ -51,7 +50,6 @@ public class DeadCodeService extends AbstractSootAnalysis<IAnalysisResult, SootB
                 }
             }
         }
-
 
 
         sootResult.getSootGlobal().soot_PackManager().getPack("jtp").remove("jtp.analysis");
