@@ -74,7 +74,7 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
     /**
      * Method the framework uses to decide whether this service should be hidden from the user
      *
-     * @return
+     * @return whether this service should be hidden from the user
      */
     boolean shouldBeHidden();
 }
