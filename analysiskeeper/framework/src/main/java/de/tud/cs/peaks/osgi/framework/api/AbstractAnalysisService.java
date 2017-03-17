@@ -49,9 +49,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      * Constructor of the AnalysisService.
      *
      * @param context the context of the bundle this service belongs to.
-     * @throws IllegalClassFormatException when the concrete service does not have a @DependsOn annotation.
-     * @throws IllegalStateException       if an AnalysisService required by the @DependsOn annotation is not registered in the context.
-     */
+   */
     protected AbstractAnalysisService(BundleContext context) {
         this.results = new ConcurrentHashMap<>();
         this.context = context;
@@ -62,7 +60,7 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      * {@inheritDoc}
      */
     @Override
-    public final Future<Result> performAnalysis(final Config config) throws IllegalClassFormatException {
+    public final Future<Result> performAnalysis(final Config config) {
         checkService();
         final Stopwatch overall = Stopwatch.createStarted();
 
@@ -178,10 +176,9 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     /**
      * Checks the the class layout of the concrete AnalysisService.
      *
-     * @throws IllegalClassFormatException when the concrete Service does not have a @DependsOn annotation.
      * @throws IllegalStateException       if an AnalysisService required by the @DependsOn annotation is not registered in the context.
      */
-    private void checkService() throws IllegalClassFormatException, IllegalStateException {
+    private void checkService() throws  IllegalStateException {
         if (checked) {
             return;
         }
