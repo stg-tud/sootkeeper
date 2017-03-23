@@ -17,13 +17,12 @@ The use of static analysis allows developers to analyze the source code of a pro
 * Ant (If you want to install soot from source)
 * soot in your local maven repository (See below)
 * OSGi framework distribution, either [apache felix](https://felix.apache.org/downloads.cgi) or [eclipse equinox](http://download.eclipse.org/equinox/) work
-* [SootConfig](https://github.com/stg-tud/sootconfig) in your local maven repository
 
 ## Installing soot
 ### From nightly
 Download the current [nightly build of Soot](https://github.com/Sable/soot#how-do-i-obtain-the-nightly-builds), for instance using curl:
 
-    curl https://ssebuild.cased.de/nightly/soot/lib/soot-trunk.jar > soot-trunk.jar
+    curl http://soot-build.cs.uni-paderborn.de/nightly/soot/soot-trunk.jar > soot-trunk.jar
     
 And install it using maven:
 
@@ -63,7 +62,7 @@ Run felix using in the top level folder of the felix distribution.
 
     java -jar bin/felix.jar
 
-**Note:** If you changed a bundle (e.g. your analysis) it is not sufficient enough to just replace the jar within the bundle directory. Furthermore you have to delete the felix-cache directory.
+**Note:** If you changed a bundle (e.g. your analysis) it is not sufficient enough to just replace the jar within the bundle directory for subsequent runs. Furthermore you have to delete the felix-cache directory.
 
 ### Using the OSGi shell
 
@@ -71,6 +70,9 @@ Sootkeeper provides two commands in the OSGi shell, `listAnalyses` and `runAnaly
 
 Any listed Analysis can then be run with `runAnalysis <analysisName> <Optional Parameter>`.
 
+In Addition there is the command `updateAnalysis`(short version:`ua`) which reloads the provided Analysis or the one which was run last if none is provided into the framework.
+
+The command `rep` repeats the previously run analysis with the same arguments, so that you can run the commands ua, and rep when you have replaced an anlysis with a newer version. 
 
 ## Implement your own Analysis
 The easiest way to implement an modular analysis is creating a maven project and extending our framework.
@@ -79,12 +81,12 @@ The easiest way to implement an modular analysis is creating a maven project and
 Within your pom file you need to care about three things:
 
 1. Say maven that your project is an OSGi bundle and should be exported as one (by `<packaging>bundle</packaging>`).
-2. Add the SootKeeper framework to your dependencies (GroupId: `de.tud.cs.peaks.osgi` ArtifactId `framework`).
+2. Add the SootKeeper framework to your dependencies (GroupId: `de.tud.cs.peaks.osgi` ArtifactId `sootkeeper-framework`).
 3. Configure the maven-bundle-plugin s.t. you list your packages to export (that should be used by other bundles), import (that you use from other bundles and must include the SootKeeper API `de.tud.cs.peaks.osgi.framework.api.*`) and the private packages (code that should be in your bundle jar but is not used outside you bundle). More over you need to set your Bundle Activator class.
 
 Step three can be done when an implementation draft exists.
 
-Here is an example of a valid pom.xml.
+Here is an example of a valid pom.xml. Another simple example can be seen in the submodule hello-world of this project
 
 ```xml
   <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -102,8 +104,8 @@ Here is an example of a valid pom.xml.
           </dependency>
           <dependency>
               <groupId>de.tud.cs.peaks.osgi</groupId>
-              <artifactId>framework</artifactId>
-              <version>nightly</version>
+              <artifactId>sootkeeper-framework</artifactId>
+              <version>1.0</version>
           </dependency>
       </dependencies>
       <build>
