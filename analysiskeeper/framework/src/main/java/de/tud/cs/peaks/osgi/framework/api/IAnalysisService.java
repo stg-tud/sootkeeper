@@ -6,6 +6,7 @@ import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.Bundle;
 
 import java.lang.instrument.IllegalClassFormatException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
@@ -14,7 +15,7 @@ import java.util.concurrent.Future;
  *
  * @param <Result> The Result type of the analysis,
  * @param <Config> The configuration type of the analysis
- * @author Florian Kuebler
+ * @author Florian Kuebler, Patrick Mueller
  * @see AbstractAnalysisService
  */
 public interface IAnalysisService<Result extends IAnalysisResult, Config extends IAnalysisConfig> {
@@ -40,12 +41,12 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
      * Performs the analysis with the given config, running all required other analyses
      * This is implemented by {@link AbstractAnalysisService}
      *
-     * @param config the given config
+     * @param config the given configuration
      * @return a future which will contain the analysis result
-     * @see de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn
+     * @see IAnalysisService#getDependOnAnalyses()
      * @see AbstractAnalysisService
      */
-    Future<Result> performAnalysis(final Config config) throws IllegalClassFormatException;
+    Future<Result> performAnalysis(final Config config);
 
     /**
      * Converts the config of this analysis to a config of the given analysis this depends on.
@@ -77,4 +78,9 @@ public interface IAnalysisService<Result extends IAnalysisResult, Config extends
      * @return whether this service should be hidden from the user
      */
     boolean shouldBeHidden();
+
+    /**
+     * @return the list of all AnalysisServices this service depends on.
+     */
+    List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses();
 }

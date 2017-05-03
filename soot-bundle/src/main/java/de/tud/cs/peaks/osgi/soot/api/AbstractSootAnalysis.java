@@ -1,6 +1,5 @@
 package de.tud.cs.peaks.osgi.soot.api;
 
-import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisActivator;
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
@@ -8,12 +7,11 @@ import de.tud.cs.peaks.sootconfig.SootResult;
 import org.osgi.framework.BundleContext;
 import soot.G;
 
-import java.lang.instrument.IllegalClassFormatException;
 import java.util.Map;
 
 public abstract class AbstractSootAnalysis<Result extends IAnalysisResult, Config extends IAnalysisConfig> extends AbstractAnalysisService<Result, Config> {
 
-    protected AbstractSootAnalysis(BundleContext context) throws IllegalClassFormatException {
+    protected AbstractSootAnalysis(BundleContext context) {
         super(context);
     }
 

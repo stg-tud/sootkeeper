@@ -5,13 +5,10 @@ import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import java.lang.instrument.IllegalClassFormatException;
-import java.util.List;
-
 /**
  * Provides an BundleActivator Interface specific to Analyses
  *
- * @author Florian Kuebler
+ * @author Florian Kuebler, Patrick Mueller
  * @see IAnalysisService
  */
 public interface IAnalysisActivator<Result extends IAnalysisResult, Config extends IAnalysisConfig> extends BundleActivator {
@@ -21,10 +18,9 @@ public interface IAnalysisActivator<Result extends IAnalysisResult, Config exten
      *
      * @param bundleContext the current OSGi BundleContext
      * @return the corresponding analysisService
-     * @throws IllegalClassFormatException when the concrete service does not have a {@link de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn} annotation.
-     * @throws IllegalStateException       if an AnalysisService required by the {@link de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn} annotation is not registered in the context.
-     * @see de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn
+     * @throws IllegalStateException if an AnalysisService required by {@link IAnalysisService#getDependOnAnalyses()} is not registered in the context.
+     * @see IAnalysisService#getDependOnAnalyses()
      */
-    AbstractAnalysisService<Result, Config> getAnalysisService(BundleContext bundleContext) throws IllegalStateException, IllegalClassFormatException;
+    AbstractAnalysisService<Result, Config> getAnalysisService(BundleContext bundleContext) throws IllegalStateException;
 
 }

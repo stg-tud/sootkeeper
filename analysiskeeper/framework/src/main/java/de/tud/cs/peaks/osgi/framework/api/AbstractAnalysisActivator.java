@@ -5,10 +5,8 @@ import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 
-import java.lang.instrument.IllegalClassFormatException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * An abstract {@link org.osgi.framework.BundleActivator} for the use of an {@link IAnalysisService}.
@@ -33,7 +31,7 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
      * @see AbstractAnalysisService
      */
     @Override
-    public void start(BundleContext context) throws IllegalClassFormatException, IllegalStateException {
+    public void start(BundleContext context) {
         AbstractAnalysisService<Result, Config> analysisService = getAnalysisService(context);
         registrations.add(context.registerService(analysisService.getClass().getName(), analysisService, null));
     }
@@ -41,11 +39,9 @@ public abstract class AbstractAnalysisActivator<Result extends IAnalysisResult, 
 
     /**
      * {@inheritDoc}
-     *
-     * @throws IllegalStateException
      */
     @Override
-    public void stop(BundleContext context) throws IllegalClassFormatException {
+    public void stop(BundleContext context) {
         registrations.forEach(ServiceRegistration::unregister);
     }
 

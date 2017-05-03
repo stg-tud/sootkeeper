@@ -9,7 +9,6 @@ import de.tud.cs.peaks.sootconfig.SootResult;
 import de.tud.cs.peaks.sootconfig.SootRun;
 import org.osgi.framework.BundleContext;
 
-import java.lang.instrument.IllegalClassFormatException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -18,12 +17,12 @@ public class SootService extends AbstractAnalysisService<SootBundleResult, SootB
     private static final String NAME = "soot";
     private static final Object mutex = new Object();
 
-    public SootService(BundleContext context) throws IllegalClassFormatException {
+    public SootService(BundleContext context) {
         super(context);
     }
 
     @Override
-    protected List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses() {
+    public List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses() {
         return Collections.emptyList();
     }
 

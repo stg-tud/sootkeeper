@@ -15,7 +15,10 @@ import java.lang.instrument.IllegalClassFormatException;
 import java.util.*;
 import java.util.concurrent.Future;
 
-
+/**
+ * Provide commands for the OSGi shell
+ * @author Florian Kuebler, Patrick Mueller
+ */
 class HostService extends CommandGroupAdapter {
 
     public final static String USAGE_SOOTKEEPER = "";
