@@ -1,12 +1,10 @@
 package de.tud.cs.peaks.osgi.hello.api;
 
 import de.tud.cs.peaks.osgi.framework.api.AbstractAnalysisService;
-import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.BundleContext;
 
-import java.lang.instrument.IllegalClassFormatException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -15,12 +13,12 @@ import java.util.Map;
 public class IntegerService extends AbstractAnalysisService<IntegerResult, IntegerConfig> {
     private static final String NAME = "IntegerAnalysis";
 
-    public IntegerService(BundleContext context) throws IllegalStateException, IllegalClassFormatException {
+    public IntegerService(BundleContext context) {
         super(context);
     }
 
     @Override
-    protected List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses() {
+    public List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses() {
         return Collections.emptyList();
     }
 

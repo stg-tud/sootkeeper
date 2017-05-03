@@ -6,7 +6,7 @@ import org.osgi.framework.BundleContext;
 /**
  * This is just a stub to satisfy OSGi
  *
- * @author Florian Kuebler
+ * @author Florian Kuebler, Patrick Mueller
  *
  */
 public class Activator implements BundleActivator {

@@ -1,10 +1,10 @@
 package de.tud.cs.peaks.osgi.framework.api.data;
 
 /**
- * This is the abstract Class for Analysis Configs.
- * This actually overrides hashCode and equals, so that all inheriting classes need to implement them
+ * This is the abstract class for analysis configurations.
+ * This actually overrides hashCode and equals, so that all inheriting classes need to implement them.
  *
- * @author Florian Kuebler
+ * @author Florian Kuebler, Patrick Mueller
  */
 public abstract class IAnalysisConfig {
     /**

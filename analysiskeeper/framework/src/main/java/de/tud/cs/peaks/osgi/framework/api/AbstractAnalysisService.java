@@ -1,7 +1,6 @@
 package de.tud.cs.peaks.osgi.framework.api;
 
 import com.google.common.base.Stopwatch;
-import de.tud.cs.peaks.osgi.framework.api.annotations.DependsOn;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisConfig;
 import de.tud.cs.peaks.osgi.framework.api.data.IAnalysisResult;
 import org.osgi.framework.Bundle;
@@ -9,12 +8,12 @@ import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
 import java.io.*;
-import java.lang.instrument.IllegalClassFormatException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.*;
 
 /**
- * An abstract class for AnalysisServices. Concrete implementations MUST declare an {@link DependsOn} annotation indicating on which analyses the service depends on.
+ * An abstract class for AnalysisServices.
  * This class provides automatic methods to run depending analyses and to cache the results.
  *
  * @param <Result> The type of the {@link IAnalysisResult} this AnalysisService produces.
@@ -44,13 +43,16 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
      */
     private final Bundle bundle;
 
+    /**
+     * Indicates whether {@link this#checkService()} has been called to this instance.
+     */
     private boolean checked = false;
 
     /**
      * Constructor of the AnalysisService.
      *
      * @param context the context of the bundle this service belongs to.
-   */
+     */
     protected AbstractAnalysisService(BundleContext context) {
         this.results = new ConcurrentHashMap<>();
         this.context = context;
@@ -115,7 +117,9 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
         return bundle;
     }
 
-
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean shouldBeHidden() {
         return false;
@@ -177,9 +181,9 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     /**
      * Checks the the class layout of the concrete AnalysisService.
      *
-     * @throws IllegalStateException       if an AnalysisService required by the @DependsOn annotation is not registered in the context.
+     * @throws IllegalStateException if an AnalysisService required by the @DependsOn annotation is not registered in the context.
      */
-    private void checkService() throws  IllegalStateException {
+    private void checkService() throws IllegalStateException {
         if (checked) {
             return;
         }
@@ -194,10 +198,11 @@ public abstract class AbstractAnalysisService<Result extends IAnalysisResult, Co
     }
 
     /**
-     * @return the list of all AnalysisServices this service depends on.
+     * Helper method for evaluation experiments
+     * TODO remove me in Future
+     *
+     * @param time the measured time
      */
-    protected abstract List<Class<? extends AbstractAnalysisService<? extends IAnalysisResult, ? extends IAnalysisConfig>>> getDependOnAnalyses();
-
     private void logTime(Stopwatch time) {
         File f = new File("timings.txt");
         try (FileWriter fw = new FileWriter(f, true);
