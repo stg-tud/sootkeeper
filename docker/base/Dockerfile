@@ -8,7 +8,7 @@ RUN cd /root/ \
     && mkdir -p ${FELIX_FOLDER} \
     && tar -xf ${FELIX_TAR} -C ${FELIX_FOLDER} --strip 1 \
     &&  rm ${FELIX_TAR}
-RUN curl http://soot-build.cs.uni-paderborn.de/nightly/soot/soot-trunk.jar > soot-trunk.jar \
+RUN curl https://soot-build.cs.uni-paderborn.de/nightly/soot/soot-trunk.jar > soot-trunk.jar \
     && mvn org.apache.maven.plugins:maven-install-plugin:install-file -Dfile=soot-trunk.jar -DgroupId=ca.mcgill.sable -DartifactId=soot -Dversion=trunk -Dpackaging=jar -DlocalRepositoryPath=${MAVEN_REPO} \
     && rm soot-trunk.jar
 RUN git clone https://github.com/stg-tud/sootkeeper.git /root/sootkeeper/ \
