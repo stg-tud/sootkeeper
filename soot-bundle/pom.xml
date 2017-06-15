@@ -20,6 +20,11 @@
             <version>1.1</version>
         </dependency>
         <dependency>
+            <groupId>heros</groupId>
+            <artifactId>heros</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
         	<groupId>de.tu-darmstadt.stg</groupId>
         	<artifactId>framework</artifactId>
         	<version>1.1-SNAPSHOT</version>
@@ -89,14 +94,13 @@
                             soot.*,
                             heros.*,
                             de.tud.cs.peaks.sootconfig.*,
-                            org.objectweb.asm.*,
                             beaver,
                             org.jf.dexlib2.*,
                             org.jf.util.*,
                             polyglot.*,
-                            com.google.common.*,
                             java_cup.runtime,
                             com.beust.jcommander.*,
+                            java_cup.runtime
                         </_exportcontents>
                         <Export-Package>
                             de.tud.cs.peaks.osgi.soot.api,
@@ -109,7 +113,11 @@
                             de.tud.cs.peaks.osgi.framework.api.data,
                             org.slf4j,
                             javax.annotation
+                            com.google.common.*,
+                            org.objectweb.asm.*,
+                            org.slf4j.*,
                         </Import-Package>
+                        <Embed-Dependency>artifactId=soot|sootconfig|heros</Embed-Dependency>
                         <Embed-Transitive>true</Embed-Transitive>
                         <Embed-Dependency>scope=compile</Embed-Dependency>
                     </instructions>
